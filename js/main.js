@@ -1,8 +1,8 @@
 'use strict';
 
-var TYPE_OF_HOUSING = ['palace', 'flat', 'house', 'bungalo'];
-var ROOMS = [1, 2, 3, 100];
-var GUESTS = [0, 1, 2, 3];
+var MIN_VALUE = 0;
+var MAX_PRICE = 1000000;
+var TYPES_OF_HOUSING = ['palace', 'flat', 'house', 'bungalo'];
 var CHECKINS = ['12:00', '13:00', '14:00'];
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var PHOTOS = [
@@ -10,48 +10,57 @@ var PHOTOS = [
   'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
   'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
 ];
-var LOCATION_X = document.querySelector('.map').clientWidth;
+var MIN_VALUE_Y = 130;
+var MAX_VALUE_Y = 630;
+var locationX = document.querySelector('.map').clientWidth;
 var MAP = document.querySelector('.map');
 
 var getRandomIntInclusive = function (min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-// 1-й пункт задания: написание функции для создания массива из 8 сгенерированных JS-объектов
-var createArrayAnnouncements = function () {
-  var arrayAnnouncements = [];
+var getRandomElement = function (listElements) {
+  var randomElement = listElements[getRandomIntInclusive(MIN_VALUE, listElements.length - 1)];
+  return randomElement;
+};
 
-  for (var i = 1; i < 9; i++) {
-    arrayAnnouncements.push({
-      'author': {
-        'avatar': 'img/avatars/user0' + i + '.png'
+var getRandomSlice = function (listElements) {
+  var randomSlice = listElements.slice(getRandomElement(listElements), listElements.length);
+  return randomSlice;
+};
+
+// 1-й пункт задания: написание функции для создания массива из 8 сгенерированных JS-объектов
+var createAnnouncements = function (amountAnnouncements) {
+  var announcements = [];
+  for (var i = MIN_VALUE; i < amountAnnouncements; i++) {
+    announcements.push({
+      author: {
+        avatar: 'img/avatars/user0' + (i + 1) + '.png'
       },
-      'offer': {
-        'title': 'Объявление о размещении жилья владельца № ' + i,
-        'address': '' + Math.floor(Math.random() * LOCATION_X) + ', ' + getRandomIntInclusive(130, 630),
-        'price': getRandomIntInclusive(0, 1000000),
-        'type': TYPE_OF_HOUSING[getRandomIntInclusive(0, TYPE_OF_HOUSING.length - 1)],
-        'rooms': ROOMS[getRandomIntInclusive(0, ROOMS.length - 1)],
-        'guests': GUESTS[getRandomIntInclusive(0, GUESTS.length - 1)],
-        'checkin': CHECKINS[getRandomIntInclusive(0, CHECKINS.length - 1)],
-        'checkout': CHECKINS[getRandomIntInclusive(0, CHECKINS.length - 1)],
-        'features': FEATURES.slice(getRandomIntInclusive(0, FEATURES.length - 1), FEATURES.length),
-        'description': 'Описание жилья и условия размещения владельца № ' + i,
-        'photos': PHOTOS.slice(getRandomIntInclusive(0, PHOTOS.length - 1), PHOTOS.length)
+      offer: {
+        title: 'Объявление о размещении жилья владельца',
+        address: '' + getRandomIntInclusive(MIN_VALUE, locationX) + ', ' + getRandomIntInclusive(MIN_VALUE_Y, MAX_VALUE_Y),
+        price: getRandomIntInclusive(MIN_VALUE, MAX_PRICE),
+        type: getRandomElement(TYPES_OF_HOUSING),
+        rooms: getRandomIntInclusive(1, 100),
+        guests: getRandomIntInclusive(MIN_VALUE, 20),
+        checkin: getRandomElement(CHECKINS),
+        checkout: getRandomElement(CHECKINS),
+        features: getRandomSlice(FEATURES),
+        description: 'Описание жилья и условия размещения владельца',
+        photos: getRandomSlice(PHOTOS)
       },
-      'location': {
-        'x': Math.floor(Math.random() * LOCATION_X),
-        'y': getRandomIntInclusive(130, 630)
+      location: {
+        x: getRandomIntInclusive(MIN_VALUE, locationX),
+        y: getRandomIntInclusive(MIN_VALUE_Y, MAX_VALUE_Y)
       }
     }
     );
   }
-  return arrayAnnouncements;
+  return announcements;
 };
 
-var allAnnouncements = createArrayAnnouncements();
+var allAnnouncements = createAnnouncements(8);
 
 // 2-й пункт задания: удаление класса .map--faded у блока .map
 MAP.classList.remove('map--faded');
@@ -60,25 +69,28 @@ MAP.classList.remove('map--faded');
 var pinTemplate = document.querySelector('#pin').content;
 var pinTemplateButton = pinTemplate.querySelector('.map__pin');
 var mapPins = document.querySelector('.map__pins');
+var MAP_PIN_WIDTH = 25;
+var MAP_PIN_HEIGHT = 70;
+var FRAGMENT = document.createDocumentFragment();
 
 var createDomElement = function (user) {
   var mapPin = pinTemplateButton.cloneNode(true);
   var mapPinImg = mapPin.querySelector('img');
   mapPinImg.src = user.author.avatar;
   mapPinImg.alt = user.offer.title;
-  mapPin.style.left = user.location.x - 25 + 'px';
-  mapPin.style.top = user.location.y - 70 + 'px';
-
+  mapPin.style.left = user.location.x - MAP_PIN_WIDTH + 'px';
+  mapPin.style.top = user.location.y - MAP_PIN_HEIGHT + 'px';
   return mapPin;
 };
 
 // 4-й пункт задания: отрисовка сгенерированных DOM-элементов в блок .map__pins на основе 1 задания
 
-var createMapPins = function () {
-  for (var j = 0; j < allAnnouncements.length; j++) {
-    var pin = createDomElement(allAnnouncements[j]);
-    mapPins.appendChild(pin);
+var createMapPins = function (listAnnouncements) {
+  for (var i = MIN_VALUE; i < listAnnouncements.length; i++) {
+    var pin = createDomElement(listAnnouncements[i]);
+    var allPins = FRAGMENT.appendChild(pin);
   }
+  return allPins;
 };
 
-createMapPins();
+mapPins.appendChild(createMapPins(allAnnouncements));
