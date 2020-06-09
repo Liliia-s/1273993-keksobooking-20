@@ -71,7 +71,7 @@ var pinTemplateButton = pinTemplate.querySelector('.map__pin');
 var mapPins = document.querySelector('.map__pins');
 var MAP_PIN_WIDTH = 25;
 var MAP_PIN_HEIGHT = 70;
-var FRAGMENT = document.createDocumentFragment();
+var fragment = document.createDocumentFragment();
 
 var createDomElement = function (user) {
   var mapPin = pinTemplateButton.cloneNode(true);
@@ -88,9 +88,9 @@ var createDomElement = function (user) {
 var createMapPins = function (listAnnouncements) {
   for (var i = MIN_VALUE; i < listAnnouncements.length; i++) {
     var pin = createDomElement(listAnnouncements[i]);
-    var allPins = FRAGMENT.appendChild(pin);
+    fragment.appendChild(pin);
   }
-  return allPins;
+  return fragment;
 };
 
 mapPins.appendChild(createMapPins(allAnnouncements));
