@@ -1,5 +1,8 @@
 'use strict';
 
+// 3-я лекция
+// 'Личный проект: больше деталей (часть 1)'
+
 var NUMBER_OF_ANNOUNCEMENTS = 8;
 var MIN_VALUE = 0;
 var MAX_PRICE = 1000000;
@@ -19,7 +22,6 @@ var MAX_VALUE_Y = 630;
 var MAP_PIN_HALF_WIDTH = 25;
 var MAP_PIN_HEIGHT = 70;
 var locationX = document.querySelector('.map').clientWidth;
-var map = document.querySelector('.map');
 
 var getRandomIntInclusive = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -30,9 +32,11 @@ var getRandomElement = function (elements) {
 };
 
 var getRandomSlice = function (elements) {
-  return elements.slice(getRandomElement(elements), elements.length);
+  var length = elements.length;
+  var begin = getRandomIntInclusive(MIN_VALUE, length - 2);
+  var end = getRandomIntInclusive(begin + 1, length);
+  return elements.slice(begin, end);
 };
-
 
 // 1-й пункт задания: написание функции для создания массива из 8 сгенерированных JS-объектов
 var createAnnouncements = function (amountAnnouncements) {
@@ -71,7 +75,7 @@ var createAnnouncements = function (amountAnnouncements) {
 var allAnnouncements = createAnnouncements(NUMBER_OF_ANNOUNCEMENTS);
 
 // 2-й пункт задания: удаление класса .map--faded у блока .map
-map.classList.remove('map--faded');
+// map.classList.remove('map--faded');
 
 // 3-й пункт задания: создание DOM-элементов на основе 1 задания
 var pinTemplate = document.querySelector('#pin').content;
@@ -100,4 +104,65 @@ var createMapPins = function (announcements) {
   return fragment;
 };
 
-mapPins.appendChild(createMapPins(allAnnouncements));
+// mapPins.appendChild(createMapPins(allAnnouncements));
+
+// 'Личный проект: больше деталей (часть 2)'
+// пока не сделала 2 часть 3-й лекции
+
+// 4-я лекция
+// 'Личный проект: доверяй, но проверяй (часть 1)'
+
+// 1-й пункт задания: активация страницы
+// помимо input и select в задании проекта, также заблокировала поле textarea с Описанием и кнопку Опубликовать
+
+var NAME_CLASS_MAP = 'map--faded'; // перенести наверх
+var NAME_CLASS_AD = 'ad-form--disabled'; // перенести наверх
+var MAP_PIN_MAIN_HALF_HEIGHT = 31;
+var MAP_PIN_MAIN_HEIGHT = 82;
+var MAP_HEIGHT = 750;
+var mapPinMain = document.querySelector('.map__pin--main');
+var elementsOfForms = document.querySelectorAll('form input, form select, form textarea, .ad-form__submit');
+var map = document.querySelector('.map');
+var adForm = document.querySelector('.ad-form');
+var inputAdress = document.querySelector('input[name="address"]');
+
+var activateElement = function (element, className) {
+  element.classList.remove(className);
+};
+
+var getStateOfElements = function (elements) {
+  for (var i = 0; i < elements.length; i++) {
+    elements[i].toggleAttribute('disabled');
+  }
+};
+
+// 2-й пункт задания: заполнение поля адреса
+
+var getAdressMapPinMain = function (mapPinMainHeight) {
+  var positionX = Math.round(locationX / 2);
+  var positionY = MAP_HEIGHT / 2 + mapPinMainHeight;
+  inputAdress.value = '' + positionX + ', ' + positionY;
+};
+
+getStateOfElements(elementsOfForms);
+getAdressMapPinMain(MAP_PIN_MAIN_HALF_HEIGHT);
+
+var activateStatePage = function (evt) {
+  if (evt.button === 0 || evt.keyCode === 13) {
+    activateElement(map, NAME_CLASS_MAP);
+    activateElement(adForm, NAME_CLASS_AD);
+    getStateOfElements(elementsOfForms);
+    mapPins.appendChild(createMapPins(allAnnouncements));
+    getAdressMapPinMain(MAP_PIN_MAIN_HEIGHT);
+    mapPinMain.removeEventListener('mousedown', activateStatePage);
+    mapPinMain.removeEventListener('keydown', activateStatePage);
+  }
+};
+
+mapPinMain.addEventListener('mousedown', activateStatePage);
+mapPinMain.addEventListener('keydown', activateStatePage);
+
+// 2-й пункт задания: заполнение поля адреса
+
+// 'Личный проект: доверяй, но проверяй (часть 2)'
+// пока не сделала 2 часть 4-й лекции
