@@ -115,8 +115,8 @@ var createMapPins = function (announcements) {
 // 1-й пункт задания: активация страницы
 // помимо input и select в задании проекта, также заблокировала поле textarea с Описанием и кнопку Опубликовать
 
-var NAME_CLASS_MAP = 'map--faded'; // перенести наверх
-var NAME_CLASS_AD = 'ad-form--disabled'; // перенести наверх
+var NAME_CLASS_MAP = 'map--faded';
+var NAME_CLASS_AD = 'ad-form--disabled';
 var MAP_PIN_MAIN_HALF_HEIGHT = 31;
 var MAP_PIN_MAIN_HEIGHT = 82;
 var MAP_HEIGHT = 750;
@@ -162,7 +162,67 @@ var activateStatePage = function (evt) {
 mapPinMain.addEventListener('mousedown', activateStatePage);
 mapPinMain.addEventListener('keydown', activateStatePage);
 
-// 2-й пункт задания: заполнение поля адреса
+// 3-й пункт задания: валидация форм
+
+var inputTitle = document.querySelector('#title');
+var MIN_TITLE_LENGTH = 30;
+var MAX_TITLE_LENGTH = 100;
+
+// отображается только после попытки отправки - при нажатии на кнопки Опубликовать или Enter
+inputTitle.addEventListener('invalid', function () {
+  // if (inputTitle.validity.tooShort) {
+  //   inputTitle.setCustomValidity('Название должно состоять минимум из 30 символов');
+  // } else if (inputTitle.validity.tooLong) {
+  //   inputTitle.setCustomValidity('Название не должно превышать 100 символов');
+  // }
+  if (inputTitle.validity.valueMissing) {
+    inputTitle.setCustomValidity('Обязательное поле');
+  } else {
+    inputTitle.setCustomValidity('');
+  }
+});
+
+// отображается во время ввода значения, но после попытки отправки - при нажатии на кнопки Опубликовать или Enter
+inputTitle.addEventListener('input', function () {
+  var valueLength = inputTitle.value.length;
+  if (valueLength < MIN_TITLE_LENGTH) {
+    inputTitle.setCustomValidity('Еще ' + (MIN_TITLE_LENGTH - valueLength) + ' символов');
+  } else if (valueLength > MAX_TITLE_LENGTH) {
+    inputTitle.setCustomValidity('Удалите лишние ' + (valueLength - MAX_TITLE_LENGTH) + ' символов');
+  } else {
+    inputTitle.setCustomValidity('');
+  }
+});
+
+// Сейчас "живые" сообщения появляются только после попытки отправить форму и до момента, пока пользователь не исправит ошибку. Если нуобходимо, чтобы ошибки проверялись сразу, то нужно использовать метод формы reportValidity
+
+var fieldRooms = document.querySelector('#room_number');
+var fieldGuests = document.querySelector('#capacity');
+
+var getSetRoomsAndGuests = function () {
+  // if (fieldRooms.value & fieldGuests.value == 1) {
+  if (fieldRooms.value !== fieldGuests.value) {
+    fieldRooms.setCustomValidity('Значение должно быть равно ' + fieldGuests.value + ' гостям');
+  } else {
+    fieldRooms.setCustomValidity('');
+  }
+};
+
+fieldRooms.addEventListener('input', getSetRoomsAndGuests);
+fieldGuests.addEventListener('input', getSetRoomsAndGuests);
+
+
+// var getSetRoomsAndGuests = function () {
+//   // if (fieldRooms.value & fieldGuests.value == 1) {
+//   if (fieldRooms.value === 100) {
+//     fieldRooms.setCustomValidity('100 комнат не для гостей.выберите вариант не для гостей!');
+//     console.log('выбрала 100');
+//   }
+// };
+
+// fieldRooms.addEventListener('change', getSetRoomsAndGuests);
+// fieldGuests.addEventListener('change', getSetRoomsAndGuests);
+
 
 // 'Личный проект: доверяй, но проверяй (часть 2)'
 // пока не сделала 2 часть 4-й лекции
