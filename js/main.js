@@ -22,12 +22,16 @@ var MAX_VALUE_Y = 630;
 var MAP_HEIGHT = 750;
 var MAP_PIN_HALF_WIDTH = 25;
 var MAP_PIN_HEIGHT = 70;
-var MAP_PIN_MAIN_HALF_HEIGHT = 31;
+var MAP_PIN_MAIN_ROUND_HALF_HEIGHT = 31;
 var MAP_PIN_MAIN_HEIGHT = 82;
+var MAP_PIN_MAIN_WIDTH = 65;
 var NAME_CLASS_MAP = 'map--faded';
 var NAME_CLASS_AD = 'ad-form--disabled';
 var MIN_TITLE_LENGTH = 30;
 var MAX_TITLE_LENGTH = 100;
+var OFF_SET_LEFT = 570;
+var KEY_CODE_ENTER = 13;
+var KEY_CODE_MOUSE_LEFT = 0;
 var locationX = document.querySelector('.map').clientWidth;
 
 var getRandomIntInclusive = function (min, max) {
@@ -58,7 +62,7 @@ var createAnnouncements = function (amountAnnouncements) {
       },
       offer: {
         title: 'Объявление о размещении жилья владельца',
-        address: '' + coordinateX + ', ' + coordinateY,
+        address: coordinateX + ', ' + coordinateY,
         price: getRandomIntInclusive(MIN_VALUE, MAX_PRICE),
         type: getRandomElement(TYPES_OF_HOUSING),
         rooms: getRandomIntInclusive(MIN_NUMBER_OF_ROOMS, MAX_NUMBER_OF_ROOMS),
@@ -132,7 +136,7 @@ var activateElement = function (element, className) {
   element.classList.remove(className);
 };
 
-var getStateOfElements = function (elements) {
+var toggleStateOfElements = function (elements) {
   for (var i = 0; i < elements.length; i++) {
     elements[i].toggleAttribute('disabled');
   }
@@ -140,29 +144,39 @@ var getStateOfElements = function (elements) {
 
 // 2-й пункт задания: заполнение поля адреса
 
-var getAdressMapPinMain = function (mapPinMainHeight) {
-  var positionX = Math.round(locationX / 2);
+var setAdressMapPinMain = function (mapPinMainHeight) {
+  var positionX = Math.round(OFF_SET_LEFT + MAP_PIN_MAIN_WIDTH / 2);
   var positionY = MAP_HEIGHT / 2 + mapPinMainHeight;
-  inputAdress.value = '' + positionX + ', ' + positionY;
+  inputAdress.value = positionX + ', ' + positionY;
 };
 
-getStateOfElements(elementsOfForms);
-getAdressMapPinMain(MAP_PIN_MAIN_HALF_HEIGHT);
+toggleStateOfElements(elementsOfForms);
+setAdressMapPinMain(MAP_PIN_MAIN_ROUND_HALF_HEIGHT);
 
-var activateStatePage = function (evt) {
-  if (evt.button === 0 || evt.keyCode === 13) {
-    activateElement(map, NAME_CLASS_MAP);
-    activateElement(adForm, NAME_CLASS_AD);
-    getStateOfElements(elementsOfForms);
-    mapPins.appendChild(createMapPins(allAnnouncements));
-    getAdressMapPinMain(MAP_PIN_MAIN_HEIGHT);
-    mapPinMain.removeEventListener('mousedown', activateStatePage);
-    mapPinMain.removeEventListener('keydown', activateStatePage);
+var activateStatePage = function () {
+  activateElement(map, NAME_CLASS_MAP);
+  activateElement(adForm, NAME_CLASS_AD);
+  toggleStateOfElements(elementsOfForms);
+  mapPins.appendChild(createMapPins(allAnnouncements));
+  setAdressMapPinMain(MAP_PIN_MAIN_HEIGHT);
+  mapPinMain.removeEventListener('mousedown', mapPinMousedownHandler);
+  mapPinMain.removeEventListener('keydown', mapPinKeydownHandler);
+};
+
+var mapPinMousedownHandler = function (evt) {
+  if (evt.button === KEY_CODE_MOUSE_LEFT) {
+    activateStatePage();
   }
 };
 
-mapPinMain.addEventListener('mousedown', activateStatePage);
-mapPinMain.addEventListener('keydown', activateStatePage);
+var mapPinKeydownHandler = function (evt) {
+  if (evt.keyCode === KEY_CODE_ENTER) {
+    activateStatePage();
+  }
+};
+
+mapPinMain.addEventListener('mousedown', mapPinMousedownHandler);
+mapPinMain.addEventListener('keydown', mapPinKeydownHandler);
 
 // 3-й пункт задания: валидация форм
 
