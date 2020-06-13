@@ -19,8 +19,15 @@ var PHOTOS = [
 ];
 var MIN_VALUE_Y = 130;
 var MAX_VALUE_Y = 630;
+var MAP_HEIGHT = 750;
 var MAP_PIN_HALF_WIDTH = 25;
 var MAP_PIN_HEIGHT = 70;
+var MAP_PIN_MAIN_HALF_HEIGHT = 31;
+var MAP_PIN_MAIN_HEIGHT = 82;
+var NAME_CLASS_MAP = 'map--faded';
+var NAME_CLASS_AD = 'ad-form--disabled';
+var MIN_TITLE_LENGTH = 30;
+var MAX_TITLE_LENGTH = 100;
 var locationX = document.querySelector('.map').clientWidth;
 
 var getRandomIntInclusive = function (min, max) {
@@ -115,11 +122,6 @@ var createMapPins = function (announcements) {
 // 1-й пункт задания: активация страницы
 // помимо input и select в задании проекта, также заблокировала поле textarea с Описанием и кнопку Опубликовать
 
-var NAME_CLASS_MAP = 'map--faded';
-var NAME_CLASS_AD = 'ad-form--disabled';
-var MAP_PIN_MAIN_HALF_HEIGHT = 31;
-var MAP_PIN_MAIN_HEIGHT = 82;
-var MAP_HEIGHT = 750;
 var mapPinMain = document.querySelector('.map__pin--main');
 var elementsOfForms = document.querySelectorAll('form input, form select, form textarea, .ad-form__submit');
 var map = document.querySelector('.map');
@@ -165,8 +167,6 @@ mapPinMain.addEventListener('keydown', activateStatePage);
 // 3-й пункт задания: валидация форм
 
 var inputTitle = document.querySelector('#title');
-var MIN_TITLE_LENGTH = 30;
-var MAX_TITLE_LENGTH = 100;
 
 // отображается только после попытки отправки - при нажатии на кнопки Опубликовать или Enter
 inputTitle.addEventListener('invalid', function () {
@@ -210,7 +210,6 @@ var getSetRoomsAndGuests = function () {
 
 fieldRooms.addEventListener('input', getSetRoomsAndGuests);
 fieldGuests.addEventListener('input', getSetRoomsAndGuests);
-
 
 // var getSetRoomsAndGuests = function () {
 //   // if (fieldRooms.value & fieldGuests.value == 1) {
