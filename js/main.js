@@ -5,9 +5,10 @@
 
 var NUMBER_OF_ANNOUNCEMENTS = 8;
 var MIN_VALUE = 0;
-var MAX_PRICE = 1000000;
-var TYPES_OF_HOUSING = ['palace', 'flat', 'house', 'bungalo'];
+var PRICE_MAX = 1000000;
+var TYPES_OF_HOUSING = ['bungalo', 'flat', 'house', 'palace'];
 var MIN_NUMBER_OF_ROOMS = 1;
+var ONE_HUNDRED_ROOMS = '100';
 var MAX_NUMBER_OF_ROOMS = 100;
 var MAX_NUMBER_OF_GUESTS = 20;
 var CHECKINS = ['12:00', '13:00', '14:00'];
@@ -29,7 +30,6 @@ var NAME_CLASS_MAP = 'map--faded';
 var NAME_CLASS_AD = 'ad-form--disabled';
 var MIN_TITLE_LENGTH = 30;
 var MAX_TITLE_LENGTH = 100;
-var OFF_SET_LEFT = 570;
 var KEY_CODE_ENTER = 13;
 var KEY_CODE_MOUSE_LEFT = 0;
 var locationX = document.querySelector('.map').clientWidth;
@@ -63,7 +63,7 @@ var createAnnouncements = function (amountAnnouncements) {
       offer: {
         title: 'Объявление о размещении жилья владельца',
         address: coordinateX + ', ' + coordinateY,
-        price: getRandomIntInclusive(MIN_VALUE, MAX_PRICE),
+        price: getRandomIntInclusive(MIN_VALUE, PRICE_MAX),
         type: getRandomElement(TYPES_OF_HOUSING),
         rooms: getRandomIntInclusive(MIN_NUMBER_OF_ROOMS, MAX_NUMBER_OF_ROOMS),
         guests: getRandomIntInclusive(MIN_VALUE, MAX_NUMBER_OF_GUESTS),
@@ -115,8 +115,6 @@ var createMapPins = function (announcements) {
   return fragment;
 };
 
-// mapPins.appendChild(createMapPins(allAnnouncements));
-
 // 'Личный проект: больше деталей (часть 2)'
 // пока не сделала 2 часть 3-й лекции
 
@@ -130,7 +128,8 @@ var mapPinMain = document.querySelector('.map__pin--main');
 var elementsOfForms = document.querySelectorAll('form input, form select, form textarea, .ad-form__submit');
 var map = document.querySelector('.map');
 var adForm = document.querySelector('.ad-form');
-var inputAdress = document.querySelector('input[name="address"]');
+var inputAdress = document.querySelector('#address');
+var mapPinMainOffSetLeft = mapPinMain.offsetLeft;
 
 var activateElement = function (element, className) {
   element.classList.remove(className);
@@ -145,7 +144,7 @@ var toggleStateOfElements = function (elements) {
 // 2-й пункт задания: заполнение поля адреса
 
 var setAdressMapPinMain = function (mapPinMainHeight) {
-  var positionX = Math.round(OFF_SET_LEFT + MAP_PIN_MAIN_WIDTH / 2);
+  var positionX = mapPinMainOffSetLeft + Math.round(MAP_PIN_MAIN_WIDTH / 2);
   var positionY = MAP_HEIGHT / 2 + mapPinMainHeight;
   inputAdress.value = positionX + ', ' + positionY;
 };
@@ -208,34 +207,81 @@ inputTitle.addEventListener('input', function () {
   }
 });
 
+var fieldType = document.querySelector('#type');
+var fieldPrice = document.querySelector('#price');
+
+var pricesForTypes = {
+  bungalo: 0,
+  flat: 1000,
+  house: 5000,
+  palace: 10000
+};
+
+var setTypeAndPrice = function () {
+  if (fieldType.value) {
+    fieldPrice.setAttribute('min', pricesForTypes[fieldType.value]);
+    fieldPrice.setAttribute('placeholder', pricesForTypes[fieldType.value]);
+  }
+};
+
+fieldType.addEventListener('input', setTypeAndPrice);
+fieldPrice.addEventListener('input', setTypeAndPrice);
+
+// var fieldsPicture = document.querySelectorAll('#avatar, #images');
+
+// var checkFormatPhotos = function () {
+//   for (var i = 0; i < fieldsPicture.length; i++) {
+//     if (fieldsPicture[i].)
+//   } else {
+//     fieldsPicture[i].setCustomValidity('Пожалуйста.ю загрузите фто в фораие');
+//   }
+// };
+
 // Сейчас "живые" сообщения появляются только после попытки отправить форму и до момента, пока пользователь не исправит ошибку. Если нуобходимо, чтобы ошибки проверялись сразу, то нужно использовать метод формы reportValidity
+
+// var GUESTS_NUMBER_FOR_ROOM_1 = [1];
+// var GUESTS_NUMBER_FOR_ROOM_2 = [1, 2];
+// var GUESTS_NUMBER_FOR_ROOM_3 = [1, 2, 3];
+// var GUESTS_NUMBER_FOR_ROOM_100 = [0];
+// var roomsToGuests = {
+//   1: GUESTS_NUMBER_FOR_ROOM_1,
+//   2: GUESTS_NUMBER_FOR_ROOM_2,
+//   3: GUESTS_NUMBER_FOR_ROOM_3,
+//   100: GUESTS_NUMBER_FOR_ROOM_100
+// };
+
+// var setRoomsAndGuests = function () {
+//   var numberAllow = roomsToGuests[fieldRooms.value];
+//   // console.log(numberAllow, Number(fieldGuests.value));
+//   var fieldGuestsAllow = numberAllow.includes(Number(fieldGuests.value));
+//   // console.log(fieldGuestsAllow);
+//   if (fieldGuestsAllow) {
+//     fieldRooms.setCustomValidity('ВСЕ ок');
+//   } else {
+//     fieldRooms.setCustomValidity('Ошибка');
+//   }
+// };
 
 var fieldRooms = document.querySelector('#room_number');
 var fieldGuests = document.querySelector('#capacity');
 
-var getSetRoomsAndGuests = function () {
-  // if (fieldRooms.value & fieldGuests.value == 1) {
-  if (fieldRooms.value !== fieldGuests.value) {
-    fieldRooms.setCustomValidity('Значение должно быть равно ' + fieldGuests.value + ' гостям');
+var setRoomsAndGuests = function () {
+  var indexGuest = fieldGuests.selectedIndex;
+  var indexRoom = fieldRooms.selectedIndex;
+  if (fieldRooms.value === ONE_HUNDRED_ROOMS && fieldGuests.value !== '0') {
+    fieldRooms.setCustomValidity('Для ' + fieldRooms.options[indexRoom].label + ' допустимое значение кол-во мест: ' + fieldGuests.options[indexRoom].label);
+  } else if (fieldGuests.value === '0' && fieldRooms.value !== ONE_HUNDRED_ROOMS) {
+    fieldRooms.setCustomValidity('Для ' + fieldGuests.options[indexGuest].label + ' допустимое значение кол-во комнат: ' + fieldRooms.options[indexGuest].label);
+  } else if (fieldRooms.value < fieldGuests.value) {
+    fieldRooms.setCustomValidity('Допустимое кол-во гостей не должно превышать кол-во комнат');
   } else {
-    fieldRooms.setCustomValidity('');
+    fieldRooms.setCustomValidity('Все ок!');
   }
 };
 
-fieldRooms.addEventListener('input', getSetRoomsAndGuests);
-fieldGuests.addEventListener('input', getSetRoomsAndGuests);
-
-// var getSetRoomsAndGuests = function () {
-//   // if (fieldRooms.value & fieldGuests.value == 1) {
-//   if (fieldRooms.value === 100) {
-//     fieldRooms.setCustomValidity('100 комнат не для гостей.выберите вариант не для гостей!');
-//     console.log('выбрала 100');
-//   }
-// };
-
-// fieldRooms.addEventListener('change', getSetRoomsAndGuests);
-// fieldGuests.addEventListener('change', getSetRoomsAndGuests);
-
+setRoomsAndGuests();
+fieldRooms.addEventListener('input', setRoomsAndGuests);
+fieldGuests.addEventListener('input', setRoomsAndGuests);
 
 // 'Личный проект: доверяй, но проверяй (часть 2)'
 // пока не сделала 2 часть 4-й лекции
