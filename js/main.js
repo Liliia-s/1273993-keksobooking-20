@@ -210,22 +210,30 @@ var fieldTypeInputHandler = function () {
 
 fieldType.addEventListener('input', fieldTypeInputHandler);
 
-// var fieldTimein = document.querySelector('#timein');
-// var fieldTimeout = document.querySelector('#timeout');
+var fieldTimein = document.querySelector('#timein');
+var fieldTimeout = document.querySelector('#timeout');
 
-// var  = {
-//   'После 12': 'Выезд до 12',
-//   'После 13': 'Выезды до 13',
-//   'После 14': 'Выезд до 14'
-// };
+var  = {
+  'После 12': 'Выезд до 12',
+  'После 13': 'Выезды до 13',
+  'После 14': 'Выезд до 14'
+};
 
-// var fieldTimeInputHandler = function () {
-//   fieldPrice.setAttribute('min', pricesForTypes[fieldType.value]);
-//   fieldPrice.setAttribute('placeholder', pricesForTypes[fieldType.value]);
-// };
+var setTime = function () {
+  fieldPrice.setAttribute('min', pricesForTypes[fieldType.value]);
+  fieldPrice.setAttribute('placeholder', pricesForTypes[fieldType.value]);
+};
 
-// fieldTimein.addEventListener('input', fieldTimeInputHandler);
-// fieldTimeout.addEventListener('input', fieldTimeInputHandler);
+var fieldTimeinInputHandler = function () {
+
+};
+
+var fieldTimeoutInputHandler = function () {
+
+};
+
+fieldTimein.addEventListener('input', fieldTimeinInputHandler);
+fieldTimeout.addEventListener('input', fieldTimeoutInputHandler);
 
 var fieldRooms = document.querySelector('#room_number');
 var fieldGuests = document.querySelector('#capacity');
