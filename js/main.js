@@ -179,26 +179,15 @@ mapPinMain.addEventListener('keydown', mapPinKeydownHandler);
 
 // 3-й пункт задания: валидация форм
 
+// отображается во время ввода значения, но после попытки отправки - при нажатии на кнопки Опубликовать или Enter
 var inputTitle = document.querySelector('#title');
 
-// отображается только после попытки отправки - при нажатии на кнопки Опубликовать или Enter
-inputTitle.addEventListener('invalid', function () {
-  // if (inputTitle.validity.tooShort) {
-  //   inputTitle.setCustomValidity('Название должно состоять минимум из 30 символов');
-  // } else if (inputTitle.validity.tooLong) {
-  //   inputTitle.setCustomValidity('Название не должно превышать 100 символов');
-  // }
-  if (inputTitle.validity.valueMissing) {
-    inputTitle.setCustomValidity('Обязательное поле');
-  } else {
-    inputTitle.setCustomValidity('');
-  }
-});
-
-// отображается во время ввода значения, но после попытки отправки - при нажатии на кнопки Опубликовать или Enter
 inputTitle.addEventListener('input', function () {
   var valueLength = inputTitle.value.length;
-  if (valueLength < MIN_TITLE_LENGTH) {
+
+  if (inputTitle.validity.valueMissing) {
+    inputTitle.setCustomValidity('Заполните это поле.');
+  } else if (valueLength < MIN_TITLE_LENGTH) {
     inputTitle.setCustomValidity('Еще ' + (MIN_TITLE_LENGTH - valueLength) + ' символов');
   } else if (valueLength > MAX_TITLE_LENGTH) {
     inputTitle.setCustomValidity('Удалите лишние ' + (valueLength - MAX_TITLE_LENGTH) + ' символов');
