@@ -213,23 +213,12 @@ fieldType.addEventListener('input', fieldTypeInputHandler);
 var fieldTimein = document.querySelector('#timein');
 var fieldTimeout = document.querySelector('#timeout');
 
-var  = {
-  'После 12': 'Выезд до 12',
-  'После 13': 'Выезды до 13',
-  'После 14': 'Выезд до 14'
-};
-
-var setTime = function () {
-  fieldPrice.setAttribute('min', pricesForTypes[fieldType.value]);
-  fieldPrice.setAttribute('placeholder', pricesForTypes[fieldType.value]);
-};
-
 var fieldTimeinInputHandler = function () {
-
+  fieldTimeout.value = fieldTimein.value;
 };
 
 var fieldTimeoutInputHandler = function () {
-
+  fieldTimein.value = fieldTimeout.value;
 };
 
 fieldTimein.addEventListener('input', fieldTimeinInputHandler);
