@@ -254,5 +254,26 @@ var fieldGuestsInputHandler = function () {
 fieldRooms.addEventListener('input', fieldRoomsInputHandler);
 fieldGuests.addEventListener('input', fieldGuestsInputHandler);
 
-// 'Личный проект: доверяй, но проверяй (часть 2)'
-// пока не сделала 2 часть 4-й лекции
+var fieldsCheck = document.querySelectorAll('input, select');
+var buttonSubmit = document.querySelector('.ad-form__submit');
+
+var getFieldsInvalid = function () {
+  var fieldsInvalid = [];
+  fieldsCheck.forEach(function (element) {
+    if (element.checkValidity() === false) {
+      fieldsInvalid.push(element);
+    }
+  });
+  return fieldsInvalid;
+};
+
+var submitClickHandler = function () {
+  var invalidElements = getFieldsInvalid();
+  if (invalidElements) {
+    invalidElements.forEach(function (element) {
+      element.style.border = '4px double #f80000';
+    });
+  }
+};
+
+buttonSubmit.addEventListener('click', submitClickHandler);
