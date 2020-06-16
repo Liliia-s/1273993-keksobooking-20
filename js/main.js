@@ -84,9 +84,6 @@ var createAnnouncements = function (amountAnnouncements) {
 
 var allAnnouncements = createAnnouncements(NUMBER_OF_ANNOUNCEMENTS);
 
-// 2-й пункт задания: удаление класса .map--faded у блока .map
-// map.classList.remove('map--faded');
-
 // 3-й пункт задания: создание DOM-элементов на основе 1 задания
 var pinTemplate = document.querySelector('#pin').content;
 var pinTemplateButton = pinTemplate.querySelector('.map__pin');
@@ -206,47 +203,29 @@ var pricesForTypes = {
   palace: 10000
 };
 
-var fieldTypeClickHandler = function () {
+var fieldTypeInputHandler = function () {
   fieldPrice.setAttribute('min', pricesForTypes[fieldType.value]);
   fieldPrice.setAttribute('placeholder', pricesForTypes[fieldType.value]);
 };
 
-fieldType.addEventListener('input', fieldTypeClickHandler);
+fieldType.addEventListener('input', fieldTypeInputHandler);
 
-// var fieldsPicture = document.querySelectorAll('#avatar, #images');
+// var fieldTimein = document.querySelector('#timein');
+// var fieldTimeout = document.querySelector('#timeout');
 
-// var checkFormatPhotos = function () {
-//   for (var i = 0; i < fieldsPicture.length; i++) {
-//     if (fieldsPicture[i].)
-//   } else {
-//     fieldsPicture[i].setCustomValidity('Пожалуйста.ю загрузите фто в фораие');
-//   }
+// var  = {
+//   'После 12': 'Выезд до 12',
+//   'После 13': 'Выезды до 13',
+//   'После 14': 'Выезд до 14'
 // };
 
-// Сейчас "живые" сообщения появляются только после попытки отправить форму и до момента, пока пользователь не исправит ошибку. Если нуобходимо, чтобы ошибки проверялись сразу, то нужно использовать метод формы reportValidity
-
-// var GUESTS_NUMBER_FOR_ROOM_1 = [1];
-// var GUESTS_NUMBER_FOR_ROOM_2 = [1, 2];
-// var GUESTS_NUMBER_FOR_ROOM_3 = [1, 2, 3];
-// var GUESTS_NUMBER_FOR_ROOM_100 = [0];
-// var roomsToGuests = {
-//   1: GUESTS_NUMBER_FOR_ROOM_1,
-//   2: GUESTS_NUMBER_FOR_ROOM_2,
-//   3: GUESTS_NUMBER_FOR_ROOM_3,
-//   100: GUESTS_NUMBER_FOR_ROOM_100
+// var fieldTimeInputHandler = function () {
+//   fieldPrice.setAttribute('min', pricesForTypes[fieldType.value]);
+//   fieldPrice.setAttribute('placeholder', pricesForTypes[fieldType.value]);
 // };
 
-// var setRoomsAndGuests = function () {
-//   var numberAllow = roomsToGuests[fieldRooms.value];
-//   // console.log(numberAllow, Number(fieldGuests.value));
-//   var fieldGuestsAllow = numberAllow.includes(Number(fieldGuests.value));
-//   // console.log(fieldGuestsAllow);
-//   if (fieldGuestsAllow) {
-//     fieldRooms.setCustomValidity('ВСЕ ок');
-//   } else {
-//     fieldRooms.setCustomValidity('Ошибка');
-//   }
-// };
+// fieldTimein.addEventListener('input', fieldTimeInputHandler);
+// fieldTimeout.addEventListener('input', fieldTimeInputHandler);
 
 var fieldRooms = document.querySelector('#room_number');
 var fieldGuests = document.querySelector('#capacity');
@@ -266,8 +245,17 @@ var setRoomsAndGuests = function () {
 };
 
 setRoomsAndGuests();
-fieldRooms.addEventListener('input', setRoomsAndGuests);
-fieldGuests.addEventListener('input', setRoomsAndGuests);
+
+var fieldRoomsInputHandler = function () {
+  setRoomsAndGuests();
+};
+
+var fieldGuestsInputHandler = function () {
+  setRoomsAndGuests();
+};
+
+fieldRooms.addEventListener('input', fieldRoomsInputHandler);
+fieldGuests.addEventListener('input', fieldGuestsInputHandler);
 
 // 'Личный проект: доверяй, но проверяй (часть 2)'
 // пока не сделала 2 часть 4-й лекции
