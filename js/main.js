@@ -20,7 +20,6 @@ var PHOTOS = [
 ];
 var MIN_VALUE_Y = 130;
 var MAX_VALUE_Y = 630;
-var MAP_HEIGHT = 750;
 var MAP_PIN_HALF_WIDTH = 25;
 var MAP_PIN_HEIGHT = 70;
 var MAP_PIN_MAIN_ROUND_HALF_HEIGHT = 31;
@@ -130,6 +129,7 @@ var map = document.querySelector('.map');
 var adForm = document.querySelector('.ad-form');
 var inputAdress = document.querySelector('#address');
 var mapPinMainOffSetLeft = mapPinMain.offsetLeft;
+var mapPinMainOffSetTop = mapPinMain.offsetTop;
 
 var activateElement = function (element, className) {
   element.classList.remove(className);
@@ -145,7 +145,7 @@ var toggleStateOfElements = function (elements) {
 
 var setAdressMapPinMain = function (mapPinMainHeight) {
   var positionX = mapPinMainOffSetLeft + Math.round(MAP_PIN_MAIN_WIDTH / 2);
-  var positionY = MAP_HEIGHT / 2 + mapPinMainHeight;
+  var positionY = mapPinMainOffSetTop + mapPinMainHeight;
   inputAdress.value = positionX + ', ' + positionY;
 };
 
@@ -217,15 +217,12 @@ var pricesForTypes = {
   palace: 10000
 };
 
-var setTypeAndPrice = function () {
-  if (fieldType.value) {
-    fieldPrice.setAttribute('min', pricesForTypes[fieldType.value]);
-    fieldPrice.setAttribute('placeholder', pricesForTypes[fieldType.value]);
-  }
+var fieldTypeClickHandler = function () {
+  fieldPrice.setAttribute('min', pricesForTypes[fieldType.value]);
+  fieldPrice.setAttribute('placeholder', pricesForTypes[fieldType.value]);
 };
 
-fieldType.addEventListener('input', setTypeAndPrice);
-fieldPrice.addEventListener('input', setTypeAndPrice);
+fieldType.addEventListener('input', fieldTypeClickHandler);
 
 // var fieldsPicture = document.querySelectorAll('#avatar, #images');
 
@@ -275,7 +272,7 @@ var setRoomsAndGuests = function () {
   } else if (fieldRooms.value < fieldGuests.value) {
     fieldRooms.setCustomValidity('Допустимое кол-во гостей не должно превышать кол-во комнат');
   } else {
-    fieldRooms.setCustomValidity('Все ок!');
+    fieldRooms.setCustomValidity('');
   }
 };
 
