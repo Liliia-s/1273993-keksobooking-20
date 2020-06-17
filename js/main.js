@@ -111,6 +111,103 @@ var createMapPins = function (announcements) {
   return fragment;
 };
 
+// 3-я лекция часть 2
+var cardTemplate = document.querySelector('#card').content;
+var cardTemplateArticle = cardTemplate.querySelector('.map__card');
+
+var createCardOfAnnouncements = function (user) {
+  var card = cardTemplateArticle.cloneNode(true);
+  var cardAvatar = card.querySelector('.popup__avatar');
+  var cardTitle = card.querySelector('.popup__title');
+  var cardAdress = card.querySelector('.popup__text--address');
+  var cardPrice = card.querySelector('.popup__text--price');
+  var cardType = card.querySelector('.popup__type');
+  var cardRoomsAndGuests = card.querySelector('.popup__text--capacity');
+  var cardTimeInAndOut = card.querySelector('.popup__text--time');
+  var cardFeatures = card.querySelector('.popup__features li');
+  var cardDescription = card.querySelector('.popup__description');
+  var cardPhotos = card.querySelector('.popup__photos').cloneNode(true);
+
+  cardAvatar.src = user.author.avatar;
+  cardTitle.textContent = user.offer.title;
+  cardAdress.textContent = user.offer.address;
+  cardPrice.textContent = user.offer.price + ' ₽/ночь';
+
+  var type;
+  switch (user.offer.type) {
+    case 'bungalo':
+      type = 'Бунгало';
+      break;
+    case 'flat':
+      type = 'Квартира';
+      break;
+    case 'house':
+      type = 'Дом';
+      break;
+    case 'palace':
+      type = 'Дворец';
+      break;
+    default:
+      type = 'Без жилья';
+      break;
+  }
+
+  cardType.textContent = type;
+  cardRoomsAndGuests.textContent = user.offer.rooms + ' комнаты для ' + user.offer.guests + ' гостей';
+  cardTimeInAndOut.textContent = 'Заезд после ' + user.offer.checkin + ', выезд после ' + user.offer.checkout;
+
+  var feature;
+  var allFeatures;
+
+  for (var i = 0; i < user.offer.features.length; i++) {
+    switch (user.offer.features[i]) {
+      case 'wifi':
+        feature = 'WI-FI';
+        break;
+      case 'dishwasher':
+        feature = 'Посудомоечная машина';
+        break;
+      case 'parking':
+        feature = 'Парковка';
+        break;
+      case 'washer':
+        feature = 'Кухня';
+        break;
+      case 'elevator':
+        feature = 'Лифт';
+        break;
+      case 'conditioner':
+        feature = 'Кондиционер';
+        break;
+      default:
+        feature = 'Без удобств';
+        break;
+    }
+
+    allFeatures += feature + ' ';
+  }
+
+  cardFeatures.textContent = allFeatures;
+  cardDescription.textContent = user.offer.description;
+  cardPhotos.src = user.offer.photos;
+
+  return card;
+};
+
+var createCards = function (announcements) {
+  for (var i = 0; i < announcements.length; i++) {
+    var cardItem = createCardOfAnnouncements(announcements[i]);
+    fragment.appendChild(cardItem);
+  }
+  return fragment;
+};
+
+var map = document.querySelector('.map');
+var mapFilters = document.querySelector('.map__filters-container');
+map.insertBefore(createCards(allAnnouncements), mapFilters);
+
+// var map = document.querySelector('.map');
+
 // 'Личный проект: больше деталей (часть 2)'
 // пока не сделала 2 часть 3-й лекции
 
@@ -122,7 +219,7 @@ var createMapPins = function (announcements) {
 
 var mapPinMain = document.querySelector('.map__pin--main');
 var elementsOfForms = document.querySelectorAll('form input, form select, form textarea, .ad-form__submit');
-var map = document.querySelector('.map');
+// var map = document.querySelector('.map');
 var adForm = document.querySelector('.ad-form');
 var inputAdress = document.querySelector('#address');
 var mapPinMainOffSetLeft = mapPinMain.offsetLeft;
