@@ -199,19 +199,18 @@ var createCardOfAnnouncements = function (user) {
   return card;
 };
 
-var createCards = function (announcements) {
-  for (var i = 0; i < announcements.length; i++) {
-    var cardItem = createCardOfAnnouncements(announcements[i]);
-    fragment.appendChild(cardItem);
-  }
-  return fragment;
-};
+// var createCards = function (announcements) {
+//   for (var i = 0; i < announcements.length; i++) {
+//     var cardItem = createCardOfAnnouncements(announcements[i]);
+//     fragment.appendChild(cardItem);
+//   }
+//   return fragment;
+// };
 
 var map = document.querySelector('.map');
 var mapFilters = document.querySelector('.map__filters-container');
-map.insertBefore(createCards(allAnnouncements), mapFilters);
 
-// var map = document.querySelector('.map');
+map.insertBefore(createCardOfAnnouncements(allAnnouncements[0]), mapFilters);
 
 // 'Личный проект: больше деталей (часть 2)'
 // пока не сделала 2 часть 3-й лекции
