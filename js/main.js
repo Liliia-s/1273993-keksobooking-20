@@ -111,6 +111,82 @@ var createMapPins = function (announcements) {
   return fragment;
 };
 
+// 3-я лекция часть 2
+var cardTemplate = document.querySelector('#card').content;
+var cardTemplateArticle = cardTemplate.querySelector('.map__card');
+
+var createCardOfAnnouncements = function (user) {
+  var card = cardTemplateArticle.cloneNode(true);
+  var cardAvatar = card.querySelector('.popup__avatar');
+  var cardTitle = card.querySelector('.popup__title');
+  var cardAdress = card.querySelector('.popup__text--address');
+  var cardPrice = card.querySelector('.popup__text--price');
+  var cardType = card.querySelector('.popup__type');
+  var cardRoomsAndGuests = card.querySelector('.popup__text--capacity');
+  var cardTimeInAndOut = card.querySelector('.popup__text--time');
+  var cardFeatures = card.querySelector('.popup__features');
+  var cardDescription = card.querySelector('.popup__description');
+  var cardPhotos = card.querySelector('.popup__photos');
+
+  if (user.author.avatar) {
+    cardAvatar.src = user.author.avatar;
+  } else {
+    cardAvatar.style.display = 'none';
+  }
+
+  cardTitle.textContent = user.offer.title;
+  cardAdress.textContent = user.offer.address;
+  cardPrice.textContent = user.offer.price + ' ₽/ночь';
+
+  var types = {
+    bungalo: 'Бунгало',
+    flat: 'Квартира',
+    house: 'Дом',
+    palace: 'Дворец'
+  };
+
+  cardType.textContent = types[user.offer.type];
+  cardRoomsAndGuests.textContent = user.offer.rooms + ' комнаты для ' + user.offer.guests + ' гостей';
+  cardTimeInAndOut.textContent = 'Заезд после ' + user.offer.checkin + ', выезд после ' + user.offer.checkout;
+
+  if (user.offer.features) {
+    cardFeatures.innerHTML = '';
+    for (var i = 0; i < user.offer.features.length; i++) {
+      var popupFeature = document.createElement('li');
+      popupFeature.classList.add('popup__feature', 'popup__feature--' + user.offer.features[i]);
+      cardFeatures.appendChild(popupFeature);
+    }
+  } else {
+    cardFeatures.style.display = 'none';
+  }
+
+  if (user.offer.description) {
+    cardDescription.textContent = user.offer.description;
+  } else {
+    cardDescription.style.display = 'none';
+  }
+
+  var cardPhotoTemplate = cardPhotos.querySelector('.popup__photo');
+  cardPhotoTemplate.remove();
+
+  if (user.offer.photos) {
+    for (var j = 0; j < user.offer.photos.length; j++) {
+      var cardPhoto = cardPhotoTemplate.cloneNode(true);
+      cardPhoto.src = user.offer.photos[j];
+      cardPhotos.appendChild(cardPhoto);
+    }
+  } else {
+    cardPhotos.style.display = 'none';
+  }
+
+  return card;
+};
+
+var map = document.querySelector('.map');
+var mapFilters = document.querySelector('.map__filters-container');
+
+map.insertBefore(createCardOfAnnouncements(allAnnouncements[0]), mapFilters);
+
 // 'Личный проект: больше деталей (часть 2)'
 // пока не сделала 2 часть 3-й лекции
 
@@ -122,7 +198,7 @@ var createMapPins = function (announcements) {
 
 var mapPinMain = document.querySelector('.map__pin--main');
 var elementsOfForms = document.querySelectorAll('form input, form select, form textarea, .ad-form__submit');
-var map = document.querySelector('.map');
+// var map = document.querySelector('.map');
 var adForm = document.querySelector('.ad-form');
 var inputAdress = document.querySelector('#address');
 var mapPinMainOffSetLeft = mapPinMain.offsetLeft;
@@ -210,22 +286,19 @@ var fieldTypeInputHandler = function () {
 
 fieldType.addEventListener('input', fieldTypeInputHandler);
 
-// var fieldTimein = document.querySelector('#timein');
-// var fieldTimeout = document.querySelector('#timeout');
+var fieldTimein = document.querySelector('#timein');
+var fieldTimeout = document.querySelector('#timeout');
 
-// var  = {
-//   'После 12': 'Выезд до 12',
-//   'После 13': 'Выезды до 13',
-//   'После 14': 'Выезд до 14'
-// };
+var fieldTimeinInputHandler = function () {
+  fieldTimeout.value = fieldTimein.value;
+};
 
-// var fieldTimeInputHandler = function () {
-//   fieldPrice.setAttribute('min', pricesForTypes[fieldType.value]);
-//   fieldPrice.setAttribute('placeholder', pricesForTypes[fieldType.value]);
-// };
+var fieldTimeoutInputHandler = function () {
+  fieldTimein.value = fieldTimeout.value;
+};
 
-// fieldTimein.addEventListener('input', fieldTimeInputHandler);
-// fieldTimeout.addEventListener('input', fieldTimeInputHandler);
+fieldTimein.addEventListener('input', fieldTimeinInputHandler);
+fieldTimeout.addEventListener('input', fieldTimeoutInputHandler);
 
 var fieldRooms = document.querySelector('#room_number');
 var fieldGuests = document.querySelector('#capacity');
@@ -257,5 +330,26 @@ var fieldGuestsInputHandler = function () {
 fieldRooms.addEventListener('input', fieldRoomsInputHandler);
 fieldGuests.addEventListener('input', fieldGuestsInputHandler);
 
-// 'Личный проект: доверяй, но проверяй (часть 2)'
-// пока не сделала 2 часть 4-й лекции
+var fieldsCheck = document.querySelectorAll('input, select');
+var buttonSubmit = document.querySelector('.ad-form__submit');
+
+var getFieldsInvalid = function () {
+  var fieldsInvalid = [];
+  fieldsCheck.forEach(function (element) {
+    if (element.checkValidity() === false) {
+      fieldsInvalid.push(element);
+    }
+  });
+  return fieldsInvalid;
+};
+
+var submitClickHandler = function () {
+  var invalidElements = getFieldsInvalid();
+  if (invalidElements) {
+    invalidElements.forEach(function (element) {
+      element.style.border = '4px double #f80000';
+    });
+  }
+};
+
+buttonSubmit.addEventListener('click', submitClickHandler);
