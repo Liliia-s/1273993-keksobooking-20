@@ -124,88 +124,63 @@ var createCardOfAnnouncements = function (user) {
   var cardType = card.querySelector('.popup__type');
   var cardRoomsAndGuests = card.querySelector('.popup__text--capacity');
   var cardTimeInAndOut = card.querySelector('.popup__text--time');
-  var cardFeatures = card.querySelector('.popup__features li');
+  var cardFeatures = card.querySelector('.popup__features');
   var cardDescription = card.querySelector('.popup__description');
   var cardPhotos = card.querySelector('.popup__photos');
 
-  cardAvatar.src = user.author.avatar;
+  if (user.author.avatar) {
+    cardAvatar.src = user.author.avatar;
+  } else {
+    cardAvatar.style.display = 'none';
+  }
+
   cardTitle.textContent = user.offer.title;
   cardAdress.textContent = user.offer.address;
   cardPrice.textContent = user.offer.price + ' ₽/ночь';
 
-  var type;
-  switch (user.offer.type) {
-    case 'bungalo':
-      type = 'Бунгало';
-      break;
-    case 'flat':
-      type = 'Квартира';
-      break;
-    case 'house':
-      type = 'Дом';
-      break;
-    case 'palace':
-      type = 'Дворец';
-      break;
-    default:
-      type = 'Без жилья';
-      break;
-  }
+  var types = {
+    bungalo: 'Бунгало',
+    flat: 'Квартира',
+    house: 'Дом',
+    palace: 'Дворец'
+  };
 
-  cardType.textContent = type;
+  cardType.textContent = types[user.offer.type];
   cardRoomsAndGuests.textContent = user.offer.rooms + ' комнаты для ' + user.offer.guests + ' гостей';
   cardTimeInAndOut.textContent = 'Заезд после ' + user.offer.checkin + ', выезд после ' + user.offer.checkout;
 
-  var feature;
-  var allFeatures;
-
-  for (var i = 0; i < user.offer.features.length; i++) {
-    switch (user.offer.features[i]) {
-      case 'wifi':
-        feature = 'WI-FI';
-        break;
-      case 'dishwasher':
-        feature = 'Посудомоечная машина';
-        break;
-      case 'parking':
-        feature = 'Парковка';
-        break;
-      case 'washer':
-        feature = 'Кухня';
-        break;
-      case 'elevator':
-        feature = 'Лифт';
-        break;
-      case 'conditioner':
-        feature = 'Кондиционер';
-        break;
-      default:
-        feature = 'Без удобств';
-        break;
+  if (user.offer.features) {
+    cardFeatures.innerHTML = '';
+    for (var i = 0; i < user.offer.features.length; i++) {
+      var popupFeature = document.createElement('li');
+      popupFeature.classList.add('popup__feature', 'popup__feature--' + user.offer.features[i]);
+      cardFeatures.appendChild(popupFeature);
     }
-
-    allFeatures += feature + ' ';
+  } else {
+    cardFeatures.style.display = 'none';
   }
 
-  cardFeatures.textContent = allFeatures;
-  cardDescription.textContent = user.offer.description;
+  if (user.offer.description) {
+    cardDescription.textContent = user.offer.description;
+  } else {
+    cardDescription.style.display = 'none';
+  }
 
-  for (var j = 0; j < user.offer.photos.length; j++) {
-    var cardPhoto = cardPhotos.querySelector('.popup__photo');
-    cardPhoto.src = user.offer.photos[j];
-    cardPhotos.appendChild(cardPhoto);
+  var cardPhotoTemplate = cardPhotos.querySelector('.popup__photo');
+  cardPhotoTemplate.remove();
+
+  if (user.offer.photos) {
+    for (var j = 0; j < user.offer.photos.length; j++) {
+      var cardPhoto = cardPhotoTemplate.cloneNode(true);
+      cardPhoto.src = user.offer.photos[j];
+      cardPhotos.appendChild(cardPhoto);
+    }
+  } else {
+    cardPhotos.style.display = 'none';
   }
 
   return card;
 };
-
-// var createCards = function (announcements) {
-//   for (var i = 0; i < announcements.length; i++) {
-//     var cardItem = createCardOfAnnouncements(announcements[i]);
-//     fragment.appendChild(cardItem);
-//   }
-//   return fragment;
-// };
 
 var map = document.querySelector('.map');
 var mapFilters = document.querySelector('.map__filters-container');
