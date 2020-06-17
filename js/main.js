@@ -126,7 +126,7 @@ var createCardOfAnnouncements = function (user) {
   var cardTimeInAndOut = card.querySelector('.popup__text--time');
   var cardFeatures = card.querySelector('.popup__features li');
   var cardDescription = card.querySelector('.popup__description');
-  var cardPhotos = card.querySelector('.popup__photos').cloneNode(true);
+  var cardPhotos = card.querySelector('.popup__photos');
 
   cardAvatar.src = user.author.avatar;
   cardTitle.textContent = user.offer.title;
@@ -189,7 +189,12 @@ var createCardOfAnnouncements = function (user) {
 
   cardFeatures.textContent = allFeatures;
   cardDescription.textContent = user.offer.description;
-  cardPhotos.src = user.offer.photos;
+
+  for (var j = 0; j < user.offer.photos.length; j++) {
+    var cardPhoto = cardPhotos.querySelector('.popup__photo');
+    cardPhoto.src = user.offer.photos[j];
+    cardPhotos.appendChild(cardPhoto);
+  }
 
   return card;
 };
