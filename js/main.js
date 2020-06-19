@@ -132,8 +132,6 @@ var getCardFeatures = function (user, card) {
   } else {
     cardFeatures.classList.add('hidden');
   }
-
-  return cardFeatures;
 };
 
 var getCardPhotos = function (user, card) {
@@ -150,8 +148,6 @@ var getCardPhotos = function (user, card) {
   } else {
     cardPhotos.classList.add('hidden');
   }
-
-  return cardPhotos;
 };
 
 var createCardOfAnnouncements = function (user) {
@@ -243,7 +239,7 @@ var activateStatePage = function () {
   setAdressMapPinMain(MAP_PIN_MAIN_HEIGHT);
   mapPinMain.removeEventListener('mousedown', mapPinMousedownHandler);
   mapPinMain.removeEventListener('keydown', mapPinKeydownHandler);
-  mapPins.addEventListener('click', openPopup);
+  mapPins.addEventListener('click', mapPinClickHandler);
 };
 
 var mapPinMousedownHandler = function (evt) {
@@ -275,9 +271,9 @@ var buttonCloseClickHandler = function (evt) {
   closePopup();
 };
 
-var openPopup = function (evt) {
+var mapPinClickHandler = function (evt) {
   if (evt.target.matches('.map__pin:not(.map__pin--main), img[data-index]')) {
-    var indexPin = evt.target.dataset.index || evt.target.parentElement.dataset.index;
+    var indexPin = evt.target.dataset.index;
     closePopup();
 
     var card = createCardOfAnnouncements(allAnnouncements[indexPin]);
@@ -381,8 +377,7 @@ fieldGuests.addEventListener('input', fieldGuestsInputHandler);
 var fieldsCheck = document.querySelectorAll('input, select');
 var buttonSubmit = document.querySelector('.ad-form__submit');
 
-var getFieldsInvalid = function () {
-  var fieldsInvalid = [];
+var buttonSubmitClickHandler = function () {
   fieldsCheck.forEach(function (element) {
     if (!element.checkValidity()) {
       element.classList.add('error-field');
@@ -390,7 +385,6 @@ var getFieldsInvalid = function () {
       element.classList.remove('error-field');
     }
   });
-  return fieldsInvalid;
 };
 
-buttonSubmit.addEventListener('click', getFieldsInvalid);
+buttonSubmit.addEventListener('click', buttonSubmitClickHandler);
