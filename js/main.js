@@ -20,6 +20,7 @@ var PHOTOS = [
 ];
 var MIN_VALUE_Y = 130;
 var MAX_VALUE_Y = 630;
+// var FIRST_MAP_PIN = 1;
 var MAP_PIN_HALF_WIDTH = 25;
 var MAP_PIN_HEIGHT = 70;
 var MAP_PIN_MAIN_ROUND_HALF_HEIGHT = 31;
@@ -30,6 +31,7 @@ var NAME_CLASS_AD = 'ad-form--disabled';
 var MIN_TITLE_LENGTH = 30;
 var MAX_TITLE_LENGTH = 100;
 var KEY_CODE_ENTER = 13;
+var KEY_CODE_ESC = 27;
 var KEY_CODE_MOUSE_LEFT = 0;
 var locationX = document.querySelector('.map').clientWidth;
 
@@ -237,26 +239,64 @@ var activateStatePage = function () {
   activateElement(adForm, NAME_CLASS_AD);
   toggleStateOfElements(elementsOfForms);
   mapPins.appendChild(createMapPins(allAnnouncements));
-  map.insertBefore(createCardOfAnnouncements(allAnnouncements[getRandomIntInclusive(0, 7)]), mapFilters);
   setAdressMapPinMain(MAP_PIN_MAIN_HEIGHT);
   mapPinMain.removeEventListener('mousedown', mapPinMousedownHandler);
   mapPinMain.removeEventListener('keydown', mapPinKeydownHandler);
+  mapPins.addEventListener('click', openPopup);
 };
 
 var mapPinMousedownHandler = function (evt) {
   if (evt.button === KEY_CODE_MOUSE_LEFT) {
+    evt.preventDefault();
     activateStatePage();
   }
 };
 
 var mapPinKeydownHandler = function (evt) {
   if (evt.keyCode === KEY_CODE_ENTER) {
+    evt.preventDefault();
     activateStatePage();
   }
 };
 
 mapPinMain.addEventListener('mousedown', mapPinMousedownHandler);
 mapPinMain.addEventListener('keydown', mapPinKeydownHandler);
+
+// ------------------------------
+
+
+var popupEscHandler = function (evt) {
+  if (evt.keyCode === KEY_CODE_ESC) {
+    evt.preventDefault();
+    closePopup();
+  }
+};
+
+var buttonClosePopupHandler = function (evt) {
+  evt.preventDefault();
+  closePopup();
+};
+
+var openPopup = function (evt) {
+  if (evt.target.matches('button[type="button"], img[height="40"]')) {
+    map.insertBefore(createCardOfAnnouncements(allAnnouncements[0]), mapFilters);
+
+    var buttonClosePopup = document.querySelector('.popup__close');
+    document.addEventListener('keydown', popupEscHandler);
+    buttonClosePopup.addEventListener('click', buttonClosePopupHandler);
+  }
+
+};
+
+var closePopup = function () {
+  var popup = map.querySelector('article');
+  popup.remove();
+  // mapPins.removeEventListener('click', openPopup);
+  document.removeEventListener('keydown', popupEscHandler);
+};
+
+
+// buttonClosePopup.addEventListener('click', closePopup);
 
 // 3-й пункт задания: валидация форм
 
@@ -338,23 +378,47 @@ var fieldGuestsInputHandler = function () {
 fieldRooms.addEventListener('input', fieldRoomsInputHandler);
 fieldGuests.addEventListener('input', fieldGuestsInputHandler);
 
+// var fieldsCheck = document.querySelectorAll('input, select');
+// var buttonSubmit = document.querySelector('.ad-form__submit');
+
+// var submitClickHandler = function () {
+//   var fieldsInvalid = [];
+//   fieldsCheck.forEach(function (element) {
+//     if (!element.checkValidity()) {
+//       fieldsInvalid.push(element);
+//       fieldsInvalid.forEach(function () {
+//         element.style.border = '4px double #f80000';
+//       });
+//     } else {
+//       element.style.border = '';
+//     }
+//   });
+
+//   return fieldsInvalid;
+// };
+
+// buttonSubmit.addEventListener('click', submitClickHandler);
+
 var fieldsCheck = document.querySelectorAll('input, select');
 var buttonSubmit = document.querySelector('.ad-form__submit');
 
-var submitClickHandler = function () {
+var getFieldsInvalid = function () {
   var fieldsInvalid = [];
   fieldsCheck.forEach(function (element) {
     if (!element.checkValidity()) {
       fieldsInvalid.push(element);
-      fieldsInvalid.forEach(function () {
-        element.style.border = '4px double #f80000';
-      });
-    } else {
-      element.style.border = '';
     }
   });
-
   return fieldsInvalid;
+};
+
+var submitClickHandler = function () {
+  var invalidElements = getFieldsInvalid();
+  if (invalidElements) {
+    invalidElements.forEach(function (element) {
+      element.style.border = '4px double #f80000';
+    });
+  }
 };
 
 buttonSubmit.addEventListener('click', submitClickHandler);
