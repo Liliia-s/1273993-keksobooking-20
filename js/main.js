@@ -20,6 +20,7 @@ var PHOTOS = [
 ];
 var MIN_VALUE_Y = 130;
 var MAX_VALUE_Y = 630;
+// var FIRST_MAP_PIN = 1;
 var MAP_PIN_HALF_WIDTH = 25;
 var MAP_PIN_HEIGHT = 70;
 var MAP_PIN_MAIN_ROUND_HALF_HEIGHT = 31;
@@ -30,6 +31,7 @@ var NAME_CLASS_AD = 'ad-form--disabled';
 var MIN_TITLE_LENGTH = 30;
 var MAX_TITLE_LENGTH = 100;
 var KEY_CODE_ENTER = 13;
+var KEY_CODE_ESC = 27;
 var KEY_CODE_MOUSE_LEFT = 0;
 var locationX = document.querySelector('.map').clientWidth;
 
@@ -90,12 +92,14 @@ var pinTemplateButton = pinTemplate.querySelector('.map__pin');
 var mapPins = document.querySelector('.map__pins');
 var fragment = document.createDocumentFragment();
 
-var createDomElement = function (user) {
+var createDomElement = function (user, index) {
   var mapPin = pinTemplateButton.cloneNode(true);
   var mapPinImg = mapPin.querySelector('img');
 
+  mapPin.dataset.index = index;
   mapPinImg.src = user.author.avatar;
   mapPinImg.alt = user.offer.title;
+  mapPinImg.dataset.index = index;
   mapPin.style.left = user.location.x - MAP_PIN_HALF_WIDTH + 'px';
   mapPin.style.top = user.location.y - MAP_PIN_HEIGHT + 'px';
   return mapPin;
@@ -105,7 +109,7 @@ var createDomElement = function (user) {
 
 var createMapPins = function (announcements) {
   for (var i = 0; i < announcements.length; i++) {
-    var pin = createDomElement(announcements[i]);
+    var pin = createDomElement(announcements[i], i);
     fragment.appendChild(pin);
   }
   return fragment;
@@ -114,6 +118,37 @@ var createMapPins = function (announcements) {
 // 3-я лекция часть 2
 var cardTemplate = document.querySelector('#card').content;
 var cardTemplateArticle = cardTemplate.querySelector('.map__card');
+
+var getCardFeatures = function (user, card) {
+  var cardFeatures = card.querySelector('.popup__features');
+
+  if (user.offer.features) {
+    cardFeatures.innerHTML = '';
+    for (var i = 0; i < user.offer.features.length; i++) {
+      var popupFeature = document.createElement('li');
+      popupFeature.classList.add('popup__feature', 'popup__feature--' + user.offer.features[i]);
+      cardFeatures.appendChild(popupFeature);
+    }
+  } else {
+    cardFeatures.classList.add('hidden');
+  }
+};
+
+var getCardPhotos = function (user, card) {
+  var cardPhotos = card.querySelector('.popup__photos');
+  var cardPhotoTemplate = cardPhotos.querySelector('.popup__photo');
+  cardPhotoTemplate.remove();
+
+  if (user.offer.photos) {
+    for (var j = 0; j < user.offer.photos.length; j++) {
+      var cardPhoto = cardPhotoTemplate.cloneNode(true);
+      cardPhoto.src = user.offer.photos[j];
+      cardPhotos.appendChild(cardPhoto);
+    }
+  } else {
+    cardPhotos.classList.add('hidden');
+  }
+};
 
 var createCardOfAnnouncements = function (user) {
   var card = cardTemplateArticle.cloneNode(true);
@@ -124,14 +159,12 @@ var createCardOfAnnouncements = function (user) {
   var cardType = card.querySelector('.popup__type');
   var cardRoomsAndGuests = card.querySelector('.popup__text--capacity');
   var cardTimeInAndOut = card.querySelector('.popup__text--time');
-  var cardFeatures = card.querySelector('.popup__features');
   var cardDescription = card.querySelector('.popup__description');
-  var cardPhotos = card.querySelector('.popup__photos');
 
   if (user.author.avatar) {
     cardAvatar.src = user.author.avatar;
   } else {
-    cardAvatar.style.display = 'none';
+    cardAvatar.classList.add('hidden');
   }
 
   cardTitle.textContent = user.offer.title;
@@ -149,46 +182,18 @@ var createCardOfAnnouncements = function (user) {
   cardRoomsAndGuests.textContent = user.offer.rooms + ' комнаты для ' + user.offer.guests + ' гостей';
   cardTimeInAndOut.textContent = 'Заезд после ' + user.offer.checkin + ', выезд после ' + user.offer.checkout;
 
-  if (user.offer.features) {
-    cardFeatures.innerHTML = '';
-    for (var i = 0; i < user.offer.features.length; i++) {
-      var popupFeature = document.createElement('li');
-      popupFeature.classList.add('popup__feature', 'popup__feature--' + user.offer.features[i]);
-      cardFeatures.appendChild(popupFeature);
-    }
-  } else {
-    cardFeatures.style.display = 'none';
-  }
+  getCardFeatures(user, card);
 
   if (user.offer.description) {
     cardDescription.textContent = user.offer.description;
   } else {
-    cardDescription.style.display = 'none';
+    cardDescription.classList.add('hidden');
   }
 
-  var cardPhotoTemplate = cardPhotos.querySelector('.popup__photo');
-  cardPhotoTemplate.remove();
-
-  if (user.offer.photos) {
-    for (var j = 0; j < user.offer.photos.length; j++) {
-      var cardPhoto = cardPhotoTemplate.cloneNode(true);
-      cardPhoto.src = user.offer.photos[j];
-      cardPhotos.appendChild(cardPhoto);
-    }
-  } else {
-    cardPhotos.style.display = 'none';
-  }
+  getCardPhotos(user, card);
 
   return card;
 };
-
-var map = document.querySelector('.map');
-var mapFilters = document.querySelector('.map__filters-container');
-
-map.insertBefore(createCardOfAnnouncements(allAnnouncements[0]), mapFilters);
-
-// 'Личный проект: больше деталей (часть 2)'
-// пока не сделала 2 часть 3-й лекции
 
 // 4-я лекция
 // 'Личный проект: доверяй, но проверяй (часть 1)'
@@ -198,9 +203,10 @@ map.insertBefore(createCardOfAnnouncements(allAnnouncements[0]), mapFilters);
 
 var mapPinMain = document.querySelector('.map__pin--main');
 var elementsOfForms = document.querySelectorAll('form input, form select, form textarea, .ad-form__submit');
-// var map = document.querySelector('.map');
+var map = document.querySelector('.map');
 var adForm = document.querySelector('.ad-form');
 var inputAdress = document.querySelector('#address');
+var mapFilters = document.querySelector('.map__filters-container');
 var mapPinMainOffSetLeft = mapPinMain.offsetLeft;
 var mapPinMainOffSetTop = mapPinMain.offsetTop;
 
@@ -233,22 +239,60 @@ var activateStatePage = function () {
   setAdressMapPinMain(MAP_PIN_MAIN_HEIGHT);
   mapPinMain.removeEventListener('mousedown', mapPinMousedownHandler);
   mapPinMain.removeEventListener('keydown', mapPinKeydownHandler);
+  mapPins.addEventListener('click', mapPinClickHandler);
 };
 
 var mapPinMousedownHandler = function (evt) {
   if (evt.button === KEY_CODE_MOUSE_LEFT) {
+    evt.preventDefault();
     activateStatePage();
   }
 };
 
 var mapPinKeydownHandler = function (evt) {
   if (evt.keyCode === KEY_CODE_ENTER) {
+    evt.preventDefault();
     activateStatePage();
   }
 };
 
 mapPinMain.addEventListener('mousedown', mapPinMousedownHandler);
 mapPinMain.addEventListener('keydown', mapPinKeydownHandler);
+
+var popupKeydownEscHandler = function (evt) {
+  if (evt.keyCode === KEY_CODE_ESC) {
+    evt.preventDefault();
+    closePopup();
+  }
+};
+
+var buttonCloseClickHandler = function (evt) {
+  evt.preventDefault();
+  closePopup();
+};
+
+var mapPinClickHandler = function (evt) {
+  if (evt.target.matches('.map__pin:not(.map__pin--main), img[data-index]')) {
+    var indexPin = evt.target.dataset.index;
+    closePopup();
+
+    var card = createCardOfAnnouncements(allAnnouncements[indexPin]);
+    map.insertBefore(card, mapFilters);
+
+    var buttonClosePopup = card.querySelector('.popup__close');
+    buttonClosePopup.addEventListener('click', buttonCloseClickHandler);
+
+    document.addEventListener('keydown', popupKeydownEscHandler);
+  }
+};
+
+var closePopup = function () {
+  var popup = map.querySelector('.popup');
+  if (popup) {
+    popup.remove();
+  }
+  document.removeEventListener('keydown', popupKeydownEscHandler);
+};
 
 // 3-й пункт задания: валидация форм
 
@@ -333,23 +377,14 @@ fieldGuests.addEventListener('input', fieldGuestsInputHandler);
 var fieldsCheck = document.querySelectorAll('input, select');
 var buttonSubmit = document.querySelector('.ad-form__submit');
 
-var getFieldsInvalid = function () {
-  var fieldsInvalid = [];
+var buttonSubmitClickHandler = function () {
   fieldsCheck.forEach(function (element) {
-    if (element.checkValidity() === false) {
-      fieldsInvalid.push(element);
+    if (!element.checkValidity()) {
+      element.classList.add('error-field');
+    } else {
+      element.classList.remove('error-field');
     }
   });
-  return fieldsInvalid;
 };
 
-var submitClickHandler = function () {
-  var invalidElements = getFieldsInvalid();
-  if (invalidElements) {
-    invalidElements.forEach(function (element) {
-      element.style.border = '4px double #f80000';
-    });
-  }
-};
-
-buttonSubmit.addEventListener('click', submitClickHandler);
+buttonSubmit.addEventListener('click', buttonSubmitClickHandler);
