@@ -92,12 +92,14 @@ var pinTemplateButton = pinTemplate.querySelector('.map__pin');
 var mapPins = document.querySelector('.map__pins');
 var fragment = document.createDocumentFragment();
 
-var createDomElement = function (user) {
+var createDomElement = function (user, index) {
   var mapPin = pinTemplateButton.cloneNode(true);
   var mapPinImg = mapPin.querySelector('img');
 
+  mapPin.dataset.index = index;
   mapPinImg.src = user.author.avatar;
   mapPinImg.alt = user.offer.title;
+  mapPinImg.dataset.index = index;
   mapPin.style.left = user.location.x - MAP_PIN_HALF_WIDTH + 'px';
   mapPin.style.top = user.location.y - MAP_PIN_HEIGHT + 'px';
   return mapPin;
@@ -107,7 +109,7 @@ var createDomElement = function (user) {
 
 var createMapPins = function (announcements) {
   for (var i = 0; i < announcements.length; i++) {
-    var pin = createDomElement(announcements[i]);
+    var pin = createDomElement(announcements[i], i);
     fragment.appendChild(pin);
   }
   return fragment;
@@ -116,10 +118,8 @@ var createMapPins = function (announcements) {
 // 3-я лекция часть 2
 var cardTemplate = document.querySelector('#card').content;
 var cardTemplateArticle = cardTemplate.querySelector('.map__card');
-var card = cardTemplateArticle.cloneNode(true);
 
-
-var getCardFeatures = function (user) {
+var getCardFeatures = function (user, card) {
   var cardFeatures = card.querySelector('.popup__features');
 
   if (user.offer.features) {
@@ -130,13 +130,13 @@ var getCardFeatures = function (user) {
       cardFeatures.appendChild(popupFeature);
     }
   } else {
-    cardFeatures.style.display = 'none';
+    cardFeatures.classList.add('hidden');
   }
 
   return cardFeatures;
 };
 
-var getCardPhotos = function (user) {
+var getCardPhotos = function (user, card) {
   var cardPhotos = card.querySelector('.popup__photos');
   var cardPhotoTemplate = cardPhotos.querySelector('.popup__photo');
   cardPhotoTemplate.remove();
@@ -148,13 +148,14 @@ var getCardPhotos = function (user) {
       cardPhotos.appendChild(cardPhoto);
     }
   } else {
-    cardPhotos.style.display = 'none';
+    cardPhotos.classList.add('hidden');
   }
 
   return cardPhotos;
 };
 
 var createCardOfAnnouncements = function (user) {
+  var card = cardTemplateArticle.cloneNode(true);
   var cardAvatar = card.querySelector('.popup__avatar');
   var cardTitle = card.querySelector('.popup__title');
   var cardAdress = card.querySelector('.popup__text--address');
@@ -167,7 +168,7 @@ var createCardOfAnnouncements = function (user) {
   if (user.author.avatar) {
     cardAvatar.src = user.author.avatar;
   } else {
-    cardAvatar.style.display = 'none';
+    cardAvatar.classList.add('hidden');
   }
 
   cardTitle.textContent = user.offer.title;
@@ -185,15 +186,15 @@ var createCardOfAnnouncements = function (user) {
   cardRoomsAndGuests.textContent = user.offer.rooms + ' комнаты для ' + user.offer.guests + ' гостей';
   cardTimeInAndOut.textContent = 'Заезд после ' + user.offer.checkin + ', выезд после ' + user.offer.checkout;
 
-  getCardFeatures(user);
+  getCardFeatures(user, card);
 
   if (user.offer.description) {
     cardDescription.textContent = user.offer.description;
   } else {
-    cardDescription.style.display = 'none';
+    cardDescription.classList.add('hidden');
   }
 
-  getCardPhotos(user);
+  getCardPhotos(user, card);
 
   return card;
 };
@@ -262,41 +263,40 @@ var mapPinKeydownHandler = function (evt) {
 mapPinMain.addEventListener('mousedown', mapPinMousedownHandler);
 mapPinMain.addEventListener('keydown', mapPinKeydownHandler);
 
-// ------------------------------
-
-
-var popupEscHandler = function (evt) {
+var popupKeydownEscHandler = function (evt) {
   if (evt.keyCode === KEY_CODE_ESC) {
     evt.preventDefault();
     closePopup();
   }
 };
 
-var buttonClosePopupHandler = function (evt) {
+var buttonCloseClickHandler = function (evt) {
   evt.preventDefault();
   closePopup();
 };
 
 var openPopup = function (evt) {
-  if (evt.target.matches('button[type="button"], img[height="40"]')) {
-    map.insertBefore(createCardOfAnnouncements(allAnnouncements[0]), mapFilters);
+  if (evt.target.matches('.map__pin:not(.map__pin--main), img[data-index]')) {
+    var indexPin = evt.target.dataset.index || evt.target.parentElement.dataset.index;
+    closePopup();
 
-    var buttonClosePopup = document.querySelector('.popup__close');
-    document.addEventListener('keydown', popupEscHandler);
-    buttonClosePopup.addEventListener('click', buttonClosePopupHandler);
+    var card = createCardOfAnnouncements(allAnnouncements[indexPin]);
+    map.insertBefore(card, mapFilters);
+
+    var buttonClosePopup = card.querySelector('.popup__close');
+    buttonClosePopup.addEventListener('click', buttonCloseClickHandler);
+
+    document.addEventListener('keydown', popupKeydownEscHandler);
   }
-
 };
 
 var closePopup = function () {
-  var popup = map.querySelector('article');
-  popup.remove();
-  // mapPins.removeEventListener('click', openPopup);
-  document.removeEventListener('keydown', popupEscHandler);
+  var popup = map.querySelector('.popup');
+  if (popup) {
+    popup.remove();
+  }
+  document.removeEventListener('keydown', popupKeydownEscHandler);
 };
-
-
-// buttonClosePopup.addEventListener('click', closePopup);
 
 // 3-й пункт задания: валидация форм
 
@@ -378,27 +378,6 @@ var fieldGuestsInputHandler = function () {
 fieldRooms.addEventListener('input', fieldRoomsInputHandler);
 fieldGuests.addEventListener('input', fieldGuestsInputHandler);
 
-// var fieldsCheck = document.querySelectorAll('input, select');
-// var buttonSubmit = document.querySelector('.ad-form__submit');
-
-// var submitClickHandler = function () {
-//   var fieldsInvalid = [];
-//   fieldsCheck.forEach(function (element) {
-//     if (!element.checkValidity()) {
-//       fieldsInvalid.push(element);
-//       fieldsInvalid.forEach(function () {
-//         element.style.border = '4px double #f80000';
-//       });
-//     } else {
-//       element.style.border = '';
-//     }
-//   });
-
-//   return fieldsInvalid;
-// };
-
-// buttonSubmit.addEventListener('click', submitClickHandler);
-
 var fieldsCheck = document.querySelectorAll('input, select');
 var buttonSubmit = document.querySelector('.ad-form__submit');
 
@@ -406,19 +385,12 @@ var getFieldsInvalid = function () {
   var fieldsInvalid = [];
   fieldsCheck.forEach(function (element) {
     if (!element.checkValidity()) {
-      fieldsInvalid.push(element);
+      element.classList.add('error-field');
+    } else {
+      element.classList.remove('error-field');
     }
   });
   return fieldsInvalid;
 };
 
-var submitClickHandler = function () {
-  var invalidElements = getFieldsInvalid();
-  if (invalidElements) {
-    invalidElements.forEach(function (element) {
-      element.style.border = '4px double #f80000';
-    });
-  }
-};
-
-buttonSubmit.addEventListener('click', submitClickHandler);
+buttonSubmit.addEventListener('click', getFieldsInvalid);

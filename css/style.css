@@ -576,6 +576,11 @@ fieldset {
   padding-bottom: 5px;
 }
 
+
+.ad-form__element .error-field {
+  border: 4px double #f80000;
+}
+
 .ad-form__element input,
 .ad-form__element select,
 .ad-form__element textarea {
@@ -1138,7 +1143,6 @@ fieldset {
 .popup__photo:hover {
   border: 2px solid #ff5635;
 }
-
 
 /**
  * Сообщения об успешном и неуспешном создании объявления
