@@ -80,5 +80,7 @@
     return card;
   };
 
-  window.createCardOfAnnouncements = createCardOfAnnouncements;
+  window.cardCreate = {
+    createCardOfAnnouncements: createCardOfAnnouncements
+  };
 })();

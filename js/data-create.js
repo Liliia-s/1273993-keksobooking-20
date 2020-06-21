@@ -69,5 +69,7 @@
 
   var allAnnouncements = createAnnouncements(NUMBER_OF_ANNOUNCEMENTS);
 
-  window.allAnnouncements = allAnnouncements;
+  window.dataCreate = {
+    allAnnouncements: allAnnouncements
+  };
 })();

@@ -28,5 +28,7 @@
     return fragment;
   };
 
-  window.createMapPins = createMapPins;
+  window.pinCreate = {
+    createMapPins: createMapPins
+  };
 })();
