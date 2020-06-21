@@ -22,7 +22,7 @@
       var indexPin = evt.target.dataset.index;
       closePopup();
 
-      var card = window.cardCreate.createCardOfAnnouncements(window.dataCreate.allAnnouncements[indexPin]);
+      var card = window.card.create(window.dataCreate.allAnnouncements[indexPin]);
       map.insertBefore(card, mapFilters);
 
       var buttonClosePopup = card.querySelector('.popup__close');

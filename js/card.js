@@ -35,6 +35,13 @@
     }
   };
 
+  var types = {
+    bungalo: 'Бунгало',
+    flat: 'Квартира',
+    house: 'Дом',
+    palace: 'Дворец'
+  };
+
   var createCardOfAnnouncements = function (user) {
     var card = cardTemplateArticle.cloneNode(true);
     var cardAvatar = card.querySelector('.popup__avatar');
@@ -55,14 +62,6 @@
     cardTitle.textContent = user.offer.title;
     cardAdress.textContent = user.offer.address;
     cardPrice.textContent = user.offer.price + ' ₽/ночь';
-
-    var types = {
-      bungalo: 'Бунгало',
-      flat: 'Квартира',
-      house: 'Дом',
-      palace: 'Дворец'
-    };
-
     cardType.textContent = types[user.offer.type];
     cardRoomsAndGuests.textContent = user.offer.rooms + ' комнаты для ' + user.offer.guests + ' гостей';
     cardTimeInAndOut.textContent = 'Заезд после ' + user.offer.checkin + ', выезд после ' + user.offer.checkout;
@@ -80,7 +79,7 @@
     return card;
   };
 
-  window.cardCreate = {
-    createCardOfAnnouncements: createCardOfAnnouncements
+  window.card = {
+    create: createCardOfAnnouncements
   };
 })();

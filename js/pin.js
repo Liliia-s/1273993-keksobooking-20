@@ -28,7 +28,7 @@
     return fragment;
   };
 
-  window.pinCreate = {
-    createMapPins: createMapPins
+  window.pin = {
+    create: createMapPins
   };
 })();
