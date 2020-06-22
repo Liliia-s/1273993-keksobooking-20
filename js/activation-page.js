@@ -28,7 +28,7 @@
     activateElement(window.cardShow.map, NAME_CLASS_MAP);
     activateElement(adForm, NAME_CLASS_AD);
     toggleStateOfElements(elementsOfForms);
-    // mapPins.appendChild(window.pin.create(window.dataCreate.allAnnouncements));
+    mapPins.appendChild(window.pin.create(window.dataCreate.allAnnouncements));
     window.formValidation.setAdressMapPinMain(MAP_PIN_MAIN_HEIGHT);
     window.formValidation.mapPinMain.removeEventListener('mousedown', mapPinMousedownHandler);
     window.formValidation.mapPinMain.removeEventListener('keydown', mapPinKeydownHandler);
