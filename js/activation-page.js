@@ -51,4 +51,8 @@
 
   window.formValidation.mapPinMain.addEventListener('mousedown', mapPinMousedownHandler);
   window.formValidation.mapPinMain.addEventListener('keydown', mapPinKeydownHandler);
+
+  window.activationPage = {
+    MAP_PIN_MAIN_HEIGHT: MAP_PIN_MAIN_HEIGHT
+  };
 })();

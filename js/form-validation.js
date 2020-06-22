@@ -26,6 +26,7 @@
     } else {
       inputTitle.setCustomValidity('');
     }
+    inputTitle.reportValidity();
   });
 
   // заполнение поля Адрес
@@ -88,6 +89,7 @@
     } else {
       fieldRooms.setCustomValidity('');
     }
+    fieldRooms.reportValidity();
   };
 
   setRoomsAndGuests();
@@ -105,6 +107,8 @@
 
   window.formValidation = {
     mapPinMain: mapPinMain,
+    MAP_PIN_MAIN_WIDTH: MAP_PIN_MAIN_WIDTH,
+    inputAdress: inputAdress,
     setAdressMapPinMain: setAdressMapPinMain
   };
 })();
