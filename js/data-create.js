@@ -70,6 +70,8 @@
   var allAnnouncements = createAnnouncements(NUMBER_OF_ANNOUNCEMENTS);
 
   window.dataCreate = {
+    MIN_VALUE_Y: MIN_VALUE_Y,
+    MAX_VALUE_Y: MAX_VALUE_Y,
     allAnnouncements: allAnnouncements
   };
 })();
