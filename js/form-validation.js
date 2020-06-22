@@ -106,8 +106,6 @@
   fieldGuests.addEventListener('input', fieldGuestsInputHandler);
 
   window.formValidation = {
-    mapPinMainOffSetLeft: mapPinMainOffSetLeft,
-    mapPinMainOffSetTop: mapPinMainOffSetTop,
     mapPinMain: mapPinMain,
     MAP_PIN_MAIN_WIDTH: MAP_PIN_MAIN_WIDTH,
     inputAdress: inputAdress,
