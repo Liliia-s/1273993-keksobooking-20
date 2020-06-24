@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+  var MIN_VALUE_Y = 130;
+  var MAX_VALUE_Y = 630;
   var mapPinMain = window.formValidation.mapPinMain;
 
   mapPinMain.addEventListener('mousedown', function (evt) {
@@ -11,7 +13,7 @@
       y: evt.clientY
     };
 
-    var mouseMoveHandler = function (moveEvt) {
+    var documentMousemoveHandler = function (moveEvt) {
       moveEvt.preventDefault();
 
       var shift = {
@@ -30,8 +32,8 @@
       var mapPinMainHeight = window.activationPage.MAP_PIN_MAIN_HEIGHT;
       var coordinateMinX = mapPinMain.parentElement.offsetLeft - mapPinMainHalfWidth;
       var coordinateMaxX = mapPinMain.parentElement.offsetWidth - mapPinMainHalfWidth;
-      var coordinateMinY = window.dataCreate.MIN_VALUE_Y - mapPinMainHeight;
-      var coordinateMaxY = window.dataCreate.MAX_VALUE_Y - mapPinMainHeight;
+      var coordinateMinY = MIN_VALUE_Y - mapPinMainHeight;
+      var coordinateMaxY = MAX_VALUE_Y - mapPinMainHeight;
 
       var findCoordinateOfMapPinMain = function (valueX, valueY, valueMinX, valueMaxX, valueMinY, valueMaxY) {
         if (valueX < valueMinX) {
@@ -56,15 +58,15 @@
       findCoordinateOfMapPinMain(coordinateX, coordinateY, coordinateMinX, coordinateMaxX, coordinateMinY, coordinateMaxY);
     };
 
-    var mouseUpHandler = function (upEvt) {
+    var documentMouseupHandler = function (upEvt) {
       upEvt.preventDefault();
 
-      document.removeEventListener('mousemove', mouseMoveHandler);
-      document.removeEventListener('mouseup', mouseUpHandler);
+      document.removeEventListener('mousemove', documentMousemoveHandler);
+      document.removeEventListener('mouseup', documentMouseupHandler);
     };
 
-    document.addEventListener('mousemove', mouseMoveHandler);
-    document.addEventListener('mouseup', mouseUpHandler);
+    document.addEventListener('mousemove', documentMousemoveHandler);
+    document.addEventListener('mouseup', documentMouseupHandler);
 
   });
 })();

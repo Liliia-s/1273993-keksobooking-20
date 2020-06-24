@@ -21,14 +21,17 @@
     if (evt.target.matches('.map__pin:not(.map__pin--main), img[data-index]')) {
       var indexPin = evt.target.dataset.index;
       closePopup();
+      // var card = window.card.create(window.dataCreate.allAnnouncements[indexPin]);
+      window.load(function (announcements) {
+        var card = window.card.create(announcements[indexPin]);
+        map.insertBefore(card, mapFilters);
 
-      var card = window.card.create(window.dataCreate.allAnnouncements[indexPin]);
-      map.insertBefore(card, mapFilters);
+        var buttonClosePopup = card.querySelector('.popup__close');
+        buttonClosePopup.addEventListener('click', buttonCloseClickHandler);
 
-      var buttonClosePopup = card.querySelector('.popup__close');
-      buttonClosePopup.addEventListener('click', buttonCloseClickHandler);
+        document.addEventListener('keydown', popupKeydownEscHandler);
 
-      document.addEventListener('keydown', popupKeydownEscHandler);
+      }, function () { });
     }
   };
 

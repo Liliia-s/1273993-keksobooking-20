@@ -6,9 +6,9 @@
 
   var getCardFeatures = function (user, card) {
     var cardFeatures = card.querySelector('.popup__features');
+    cardFeatures.innerHTML = '';
 
-    if (user.offer.features) {
-      cardFeatures.innerHTML = '';
+    if (user.offer.features.length !== 0) {
       for (var i = 0; i < user.offer.features.length; i++) {
         var popupFeature = document.createElement('li');
         popupFeature.classList.add('popup__feature', 'popup__feature--' + user.offer.features[i]);
@@ -24,7 +24,7 @@
     var cardPhotoTemplate = cardPhotos.querySelector('.popup__photo');
     cardPhotoTemplate.remove();
 
-    if (user.offer.photos) {
+    if (user.offer.photos.length !== 0) {
       for (var j = 0; j < user.offer.photos.length; j++) {
         var cardPhoto = cardPhotoTemplate.cloneNode(true);
         cardPhoto.src = user.offer.photos[j];
