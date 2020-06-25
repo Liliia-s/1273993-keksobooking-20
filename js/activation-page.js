@@ -27,15 +27,31 @@
   toggleStateOfElements(elementsOfMapForm);
   window.formValidation.setAdressMapPinMain(MAP_PIN_MAIN_ROUND_HALF_HEIGHT);
 
+  var allAnnouncements;
+
+  var successHandler = function (adverts) {
+    var announcements = adverts;
+    allAnnouncements = announcements;
+    mapPins.appendChild(window.pin.create(announcements));
+    toggleStateOfElements(elementsOfMapForm);
+  };
+
+  var errorHandler = function (errorMessage) {
+    var node = document.createElement('div');
+    node.style = 'z-index: 100; margin: 0 auto; text-align: center; color: white; font-weight: bold; background-color: orange;';
+    node.style.position = 'absolute';
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.fontSize = '35px';
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', node);
+  };
+
   var activateStatePage = function () {
     activateElement(window.cardShow.map, NAME_CLASS_MAP);
     activateElement(adForm, NAME_CLASS_AD);
     toggleStateOfElements(elementsOfAdForm);
-    var successHandler = function (announcements) {
-      mapPins.appendChild(window.pin.create(announcements));
-      toggleStateOfElements(elementsOfMapForm);
-    };
-    window.load(successHandler, window.data.errorHandler);
+    window.load(successHandler, errorHandler);
     // mapPins.appendChild(window.pin.create(window.dataCreate.allAnnouncements));
     window.formValidation.setAdressMapPinMain(MAP_PIN_MAIN_HEIGHT);
     window.formValidation.mapPinMain.removeEventListener('mousedown', mapPinMousedownHandler);
@@ -61,6 +77,9 @@
   window.formValidation.mapPinMain.addEventListener('keydown', mapPinKeydownHandler);
 
   window.activationPage = {
+    getAllAnnouncements: function () {
+      return allAnnouncements;
+    },
     MAP_PIN_MAIN_HEIGHT: MAP_PIN_MAIN_HEIGHT
   };
 })();
