@@ -21,13 +21,10 @@
     if (evt.target.matches('.map__pin:not(.map__pin--main), img[data-index]')) {
       var indexPin = evt.target.dataset.index;
       closePopup();
-
-      var card = window.card.create(window.dataCreate.allAnnouncements[indexPin]);
+      var card = window.card.create(window.activationPage.getAllAnnouncements()[indexPin]);
       map.insertBefore(card, mapFilters);
-
       var buttonClosePopup = card.querySelector('.popup__close');
       buttonClosePopup.addEventListener('click', buttonCloseClickHandler);
-
       document.addEventListener('keydown', popupKeydownEscHandler);
     }
   };
@@ -42,6 +39,7 @@
 
   window.cardShow = {
     map: map,
+    mapFilters: mapFilters,
     mapPinClickHandler: mapPinClickHandler
   };
 })();
