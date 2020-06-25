@@ -7,8 +7,10 @@
   var NAME_CLASS_AD = 'ad-form--disabled';
   var KEY_CODE_ENTER = 13;
   var KEY_CODE_MOUSE_LEFT = 0;
-  var elementsOfForms = document.querySelectorAll('form input, form select, form textarea, .ad-form__submit');
   var adForm = document.querySelector('.ad-form');
+  var elementsOfAdForm = adForm.querySelectorAll('input, select, textarea');
+  var mapForm = document.querySelector('.map__filters');
+  var elementsOfMapForm = mapForm.querySelectorAll('input, select');
   var mapPins = document.querySelector('.map__pins');
 
   var activateElement = function (element, className) {
@@ -20,17 +22,20 @@
       elements[i].toggleAttribute('disabled');
     }
   };
-
-  toggleStateOfElements(elementsOfForms);
+  // window.cardShow.mapFilters
+  toggleStateOfElements(elementsOfAdForm);
+  toggleStateOfElements(elementsOfMapForm);
   window.formValidation.setAdressMapPinMain(MAP_PIN_MAIN_ROUND_HALF_HEIGHT);
 
   var activateStatePage = function () {
     activateElement(window.cardShow.map, NAME_CLASS_MAP);
     activateElement(adForm, NAME_CLASS_AD);
-    toggleStateOfElements(elementsOfForms);
-    window.load(function (announcements) {
+    toggleStateOfElements(elementsOfAdForm);
+    var successHandler = function (announcements) {
       mapPins.appendChild(window.pin.create(announcements));
-    }, function () { });
+      toggleStateOfElements(elementsOfMapForm);
+    };
+    window.load(successHandler, window.data.errorHandler);
     // mapPins.appendChild(window.pin.create(window.dataCreate.allAnnouncements));
     window.formValidation.setAdressMapPinMain(MAP_PIN_MAIN_HEIGHT);
     window.formValidation.mapPinMain.removeEventListener('mousedown', mapPinMousedownHandler);
