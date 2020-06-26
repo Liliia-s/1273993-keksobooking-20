@@ -38,6 +38,7 @@
   };
 
   window.cardShow = {
+    KEY_CODE_ESC: KEY_CODE_ESC,
     map: map,
     mapFilters: mapFilters,
     mapPinClickHandler: mapPinClickHandler

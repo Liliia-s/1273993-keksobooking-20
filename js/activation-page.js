@@ -77,6 +77,7 @@
   window.formValidation.mapPinMain.addEventListener('keydown', mapPinKeydownHandler);
 
   window.activationPage = {
+    adForm: adForm,
     getAllAnnouncements: function () {
       return allAnnouncements;
     },
