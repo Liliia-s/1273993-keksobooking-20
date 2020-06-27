@@ -7,72 +7,63 @@
   var buttonSubmitClickHandler = function () {
     fieldsCheck.forEach(function (element) {
       if (!element.checkValidity()) {
-        element.classList.add('error-field');
+        element.classNameList.add('error-field');
       } else {
-        element.classList.remove('error-field');
+        element.classNameList.remove('error-field');
       }
     });
   };
 
   buttonSubmit.addEventListener('click', buttonSubmitClickHandler);
 
-  var successHandler = function () {
-    console.log('successHandler работает');
-    var successTemplate = document.querySelector('#success').content;
-    var successBlock = successTemplate.querySelector('.success');
-    var successMessage = successBlock.cloneNode(true);
-    document.querySelector('main').insertAdjacentElement('afterbegin', successMessage);
+  var createMessage = function (tagName, className) {
+    var messageTemplate = document.querySelector(tagName).content;
+    var messageBlockTemplate = messageTemplate.querySelector(className);
+    var message = messageBlockTemplate.cloneNode(true);
+    document.querySelector('main').insertAdjacentElement('afterbegin', message);
   };
 
-  // var popupKeydownEscHandler = function (evt) {
-  //   if (evt.keyCode === KEY_CODE_ESC) {
-  //     evt.preventDefault();
-  //     closePopup();
-  //   }
-  // };
+  var successHandler = function () {
+    console.log('successHandler работает');
+    createMessage('#success', '.success');
+    window.deactivation.page();
+    document.addEventListener('click', documentClickHandler);
+    document.addEventListener('keydown', documentKeydownHandler);
+  };
 
-  // var buttonCloseClickHandler = function (evt) {
-  //   evt.preventDefault();
-  //   closePopup();
-  // };
+  var errorHandler = function () {
+    console.log('errorHandler работает');
+    createMessage('#error', '.error');
+    var errorButton = document.querySelector('.error__button');
 
-  var errorBlock = document.querySelector('.error');
+    errorButton.addEventListener('click', errorButtonClickHandler);
+    document.addEventListener('keydown', documentKeydownHandler);
+    document.addEventListener('click', documentClickHandler);
+  };
 
   var errorButtonClickHandler = function (evt) {
     evt.preventDefault();
-    closeErrorMessage();
+    closeMessage();
   };
 
   var documentKeydownHandler = function (evt) {
     evt.preventDefault();
     if (evt.keyCode === window.cardShow.KEY_CODE_ESC) {
-      closeErrorMessage();
+      closeMessage();
     }
   };
 
   var documentClickHandler = function (evt) {
     evt.preventDefault();
-    closeErrorMessage();
+    closeMessage();
   };
 
-  var closeErrorMessage = function () {
-    errorBlock.remove();
-    errorButton.removeEventListener('click', errorButtonClickHandler);
+  var closeMessage = function () {
+    var messageBlock = document.querySelector('.error') || document.querySelector('.success');
+    messageBlock.remove();
+
     document.removeEventListener('keydown', documentKeydownHandler);
     document.removeEventListener('click', documentClickHandler);
-  };
-
-  var errorHandler = function () {
-    console.log('errorHandler работает');
-    var errorTemplate = document.querySelector('#error').content;
-    var errorBlockTemplate = errorTemplate.querySelector('.error');
-    var errorMessage = errorBlockTemplate.cloneNode(true);
-    var errorButton = document.querySelector('.error__button');
-    document.querySelector('main').insertAdjacentElement('afterbegin', errorMessage);
-
-    errorButton.addEventListener('click', errorButtonClickHandler);
-    document.addEventListener('keydown', documentKeydownHandler);
-    document.addEventListener('click', documentClickHandler);
   };
 
   var adForm = document.querySelector('.ad-form');

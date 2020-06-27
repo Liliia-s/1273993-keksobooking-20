@@ -21,7 +21,7 @@
     if (evt.target.matches('.map__pin:not(.map__pin--main), img[data-index]')) {
       var indexPin = evt.target.dataset.index;
       closePopup();
-      var card = window.card.create(window.activationPage.getAllAnnouncements()[indexPin]);
+      var card = window.card.create(window.activation.getAllAnnouncements()[indexPin]);
       map.insertBefore(card, mapFilters);
       var buttonClosePopup = card.querySelector('.popup__close');
       buttonClosePopup.addEventListener('click', buttonCloseClickHandler);

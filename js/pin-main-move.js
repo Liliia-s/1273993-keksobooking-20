@@ -29,7 +29,7 @@
       var coordinateX = mapPinMain.offsetLeft - shift.x;
       var coordinateY = mapPinMain.offsetTop - shift.y;
       var mapPinMainHalfWidth = Math.round(window.formValidation.MAP_PIN_MAIN_WIDTH / 2);
-      var mapPinMainHeight = window.activationPage.MAP_PIN_MAIN_HEIGHT;
+      var mapPinMainHeight = window.activation.MAP_PIN_MAIN_HEIGHT;
       var coordinateMinX = mapPinMain.parentElement.offsetLeft - mapPinMainHalfWidth;
       var coordinateMaxX = mapPinMain.parentElement.offsetWidth - mapPinMainHalfWidth;
       var coordinateMinY = MIN_VALUE_Y - mapPinMainHeight;

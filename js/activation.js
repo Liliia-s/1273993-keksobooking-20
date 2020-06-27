@@ -8,7 +8,7 @@
   var KEY_CODE_ENTER = 13;
   var KEY_CODE_MOUSE_LEFT = 0;
   var adForm = document.querySelector('.ad-form');
-  var elementsOfAdForm = adForm.querySelectorAll('input, select, textarea');
+  var elementsOfAdForm = adForm.querySelectorAll('input, select, textarea, button');
   var mapForm = document.querySelector('.map__filters');
   var elementsOfMapForm = mapForm.querySelectorAll('input, select');
   var mapPins = document.querySelector('.map__pins');
@@ -23,8 +23,12 @@
     }
   };
   // window.cardShow.mapFilters
-  toggleStateOfElements(elementsOfAdForm);
-  toggleStateOfElements(elementsOfMapForm);
+  var toggleStateForms = function () {
+    toggleStateOfElements(elementsOfAdForm);
+    toggleStateOfElements(elementsOfMapForm);
+  };
+
+  toggleStateForms();
   window.formValidation.setAdressMapPinMain(MAP_PIN_MAIN_ROUND_HALF_HEIGHT);
 
   var allAnnouncements;
@@ -76,8 +80,11 @@
   window.formValidation.mapPinMain.addEventListener('mousedown', mapPinMousedownHandler);
   window.formValidation.mapPinMain.addEventListener('keydown', mapPinKeydownHandler);
 
-  window.activationPage = {
+  window.activation = {
+    NAME_CLASS_MAP: NAME_CLASS_MAP,
+    NAME_CLASS_AD: NAME_CLASS_AD,
     adForm: adForm,
+    toggleStateForms: toggleStateForms,
     getAllAnnouncements: function () {
       return allAnnouncements;
     },

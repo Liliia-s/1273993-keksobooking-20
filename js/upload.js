@@ -3,7 +3,7 @@
 (function () {
   var URL = 'https://javascript.pages.academy/keksobooking';
   var StatusCode = {
-    OK: 201
+    OK: 200
   };
 
   window.upload = function (data, successHandler, errorHandler) {
