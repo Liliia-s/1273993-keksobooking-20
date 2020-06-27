@@ -1,21 +1,6 @@
 'use strict';
 
 (function () {
-  var fieldsCheck = document.querySelectorAll('input, select');
-  var buttonSubmit = document.querySelector('.ad-form__submit');
-
-  var buttonSubmitClickHandler = function () {
-    fieldsCheck.forEach(function (element) {
-      if (!element.checkValidity()) {
-        element.classNameList.add('error-field');
-      } else {
-        element.classNameList.remove('error-field');
-      }
-    });
-  };
-
-  buttonSubmit.addEventListener('click', buttonSubmitClickHandler);
-
   var createMessage = function (tagName, className) {
     var messageTemplate = document.querySelector(tagName).content;
     var messageBlockTemplate = messageTemplate.querySelector(className);
@@ -24,15 +9,14 @@
   };
 
   var successHandler = function () {
-    console.log('successHandler работает');
     createMessage('#success', '.success');
     window.deactivation.page();
+
     document.addEventListener('click', documentClickHandler);
     document.addEventListener('keydown', documentKeydownHandler);
   };
 
   var errorHandler = function () {
-    console.log('errorHandler работает');
     createMessage('#error', '.error');
     var errorButton = document.querySelector('.error__button');
 
@@ -59,8 +43,14 @@
   };
 
   var closeMessage = function () {
-    var messageBlock = document.querySelector('.error') || document.querySelector('.success');
-    messageBlock.remove();
+    var errorMessage = document.querySelector('.error');
+    var successMessage = document.querySelector('.success');
+
+    if (successMessage) {
+      successMessage.remove();
+    } else {
+      errorMessage.remove();
+    }
 
     document.removeEventListener('keydown', documentKeydownHandler);
     document.removeEventListener('click', documentClickHandler);
@@ -71,6 +61,5 @@
   adForm.addEventListener('submit', function (evt) {
     evt.preventDefault();
     window.upload(new FormData(adForm), successHandler, errorHandler);
-    console.log('submit работает');
   });
 })();

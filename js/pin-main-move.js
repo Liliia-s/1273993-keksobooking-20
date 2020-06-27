@@ -3,7 +3,7 @@
 (function () {
   var MIN_VALUE_Y = 130;
   var MAX_VALUE_Y = 630;
-  var mapPinMain = window.formValidation.mapPinMain;
+  var mapPinMain = window.form.mapPinMain;
 
   mapPinMain.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
@@ -28,7 +28,7 @@
 
       var coordinateX = mapPinMain.offsetLeft - shift.x;
       var coordinateY = mapPinMain.offsetTop - shift.y;
-      var mapPinMainHalfWidth = Math.round(window.formValidation.MAP_PIN_MAIN_WIDTH / 2);
+      var mapPinMainHalfWidth = Math.round(window.form.MAP_PIN_MAIN_WIDTH / 2);
       var mapPinMainHeight = window.activation.MAP_PIN_MAIN_HEIGHT;
       var coordinateMinX = mapPinMain.parentElement.offsetLeft - mapPinMainHalfWidth;
       var coordinateMaxX = mapPinMain.parentElement.offsetWidth - mapPinMainHalfWidth;
@@ -52,7 +52,7 @@
         mapPinMain.style.top = valueY + 'px';
         mapPinMain.style.left = valueX + 'px';
 
-        window.formValidation.inputAdress.value = (valueX + mapPinMainHalfWidth) + ', ' + (valueY + mapPinMainHeight);
+        window.form.inputAdress.value = (valueX + mapPinMainHalfWidth) + ', ' + (valueY + mapPinMainHeight);
       };
 
       findCoordinateOfMapPinMain(coordinateX, coordinateY, coordinateMinX, coordinateMaxX, coordinateMinY, coordinateMaxY);
@@ -68,5 +68,10 @@
     document.addEventListener('mousemove', documentMousemoveHandler);
     document.addEventListener('mouseup', documentMouseupHandler);
 
+    window.pinMainMove = {
+      startCoords: function () {
+        return startCoords;
+      }
+    };
   });
 })();

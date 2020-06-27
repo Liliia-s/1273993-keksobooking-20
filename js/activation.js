@@ -29,7 +29,7 @@
   };
 
   toggleStateForms();
-  window.formValidation.setAdressMapPinMain(MAP_PIN_MAIN_ROUND_HALF_HEIGHT);
+  window.form.setAdressMapPinMain(MAP_PIN_MAIN_ROUND_HALF_HEIGHT);
 
   var allAnnouncements;
 
@@ -57,9 +57,9 @@
     toggleStateOfElements(elementsOfAdForm);
     window.load(successHandler, errorHandler);
     // mapPins.appendChild(window.pin.create(window.dataCreate.allAnnouncements));
-    window.formValidation.setAdressMapPinMain(MAP_PIN_MAIN_HEIGHT);
-    window.formValidation.mapPinMain.removeEventListener('mousedown', mapPinMousedownHandler);
-    window.formValidation.mapPinMain.removeEventListener('keydown', mapPinKeydownHandler);
+    window.form.setAdressMapPinMain(MAP_PIN_MAIN_HEIGHT);
+    window.form.mapPinMain.removeEventListener('mousedown', mapPinMousedownHandler);
+    window.form.mapPinMain.removeEventListener('keydown', mapPinKeydownHandler);
     mapPins.addEventListener('click', window.cardShow.mapPinClickHandler);
   };
 
@@ -77,10 +77,12 @@
     }
   };
 
-  window.formValidation.mapPinMain.addEventListener('mousedown', mapPinMousedownHandler);
-  window.formValidation.mapPinMain.addEventListener('keydown', mapPinKeydownHandler);
+  window.form.mapPinMain.addEventListener('mousedown', mapPinMousedownHandler);
+  window.form.mapPinMain.addEventListener('keydown', mapPinKeydownHandler);
 
   window.activation = {
+    mapPinMousedownHandler: mapPinMousedownHandler,
+    mapPinKeydownHandler: mapPinKeydownHandler,
     NAME_CLASS_MAP: NAME_CLASS_MAP,
     NAME_CLASS_AD: NAME_CLASS_AD,
     adForm: adForm,
@@ -88,6 +90,7 @@
     getAllAnnouncements: function () {
       return allAnnouncements;
     },
+    MAP_PIN_MAIN_ROUND_HALF_HEIGHT: MAP_PIN_MAIN_ROUND_HALF_HEIGHT,
     MAP_PIN_MAIN_HEIGHT: MAP_PIN_MAIN_HEIGHT
   };
 })();
