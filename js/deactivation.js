@@ -13,15 +13,15 @@
   };
 
   var resetAdForm = function () {
+    var LOCATION_MAP_PIN_MAIN_X = 570;
+    var LOCATION_MAP_PIN_MAIN_Y = 375;
     var adForm = window.activation.adForm;
     var inputsOfAdForm = adForm.querySelectorAll('#title, #price, #avatar, #images, #description');
     var selectsOfAdForm = adForm.querySelectorAll('#room_number, #timein, #timeout');
     var inputsCheckbox = adForm.querySelectorAll('[type="checkbox"]');
-    var locationMapPinMainX = 570;
-    var locationMapPinMainY = 375;
 
-    window.form.mapPinMain.style.top = locationMapPinMainY + 'px';
-    window.form.mapPinMain.style.left = locationMapPinMainX + 'px';
+    window.form.mapPinMain.style.top = LOCATION_MAP_PIN_MAIN_Y + 'px';
+    window.form.mapPinMain.style.left = LOCATION_MAP_PIN_MAIN_X + 'px';
     window.form.setAdressMapPinMain(window.activation.MAP_PIN_MAIN_ROUND_HALF_HEIGHT);
     inputsOfAdForm.forEach(function (element) {
       element.value = '';
