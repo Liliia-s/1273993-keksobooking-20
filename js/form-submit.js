@@ -1,11 +1,13 @@
 'use strict';
 
 (function () {
+  var main = document.querySelector('main');
+
   var createMessage = function (tagName, className) {
     var messageTemplate = document.querySelector(tagName).content;
     var messageBlockTemplate = messageTemplate.querySelector(className);
     var message = messageBlockTemplate.cloneNode(true);
-    document.querySelector('main').insertAdjacentElement('afterbegin', message);
+    main.insertAdjacentElement('afterbegin', message);
   };
 
   var successHandler = function () {

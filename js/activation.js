@@ -53,21 +53,14 @@
     document.body.insertAdjacentElement('afterbegin', node);
   };
 
-  var addOrRemoveEventListener = function () {
+  var setActiveStateListeners = function () {
     window.form.mapPinMain.removeEventListener('mousedown', mapPinMousedownHandler);
     window.form.mapPinMain.removeEventListener('keydown', mapPinKeydownHandler);
-
+    window.form.addEventListeners();
     mapPins.addEventListener('click', window.cardShow.mapPinClickHandler);
-    window.form.inputTitle.addEventListener('input', window.form.inputTitleHandler);
     adForm.addEventListener('submit', window.formSubmit.handler);
     resetButton.addEventListener('click', window.deactivation.page);
     buttonSubmit.addEventListener('click', window.formValidation.buttonSubmit);
-    window.form.fieldType.addEventListener('input', window.form.fieldTypeInputHandler);
-    window.form.fieldTimein.addEventListener('input', window.form.fieldTimeinInputHandler);
-    window.form.fieldTimeout.addEventListener('input', window.form.fieldTimeoutInputHandler);
-    window.form.fieldRooms.addEventListener('input', window.form.fieldRoomsInputHandler);
-    window.form.fieldGuests.addEventListener('input', window.form.fieldGuestsInputHandler);
-    window.form.mapPinMain.addEventListener('mousedown', window.pinMainMove.mousedownHandler);
   };
 
   var activateStatePage = function () {
@@ -77,7 +70,7 @@
     window.load(successHandler, errorHandler);
     // mapPins.appendChild(window.pin.create(window.dataCreate.allAnnouncements));
     window.form.setAdressMapPinMain(MAP_PIN_MAIN_HEIGHT);
-    addOrRemoveEventListener();
+    setActiveStateListeners();
   };
 
   var mapPinMousedownHandler = function (evt) {

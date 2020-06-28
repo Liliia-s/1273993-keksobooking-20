@@ -1,33 +1,10 @@
 'use strict';
 
 (function () {
-  var URL = 'https://javascript.pages.academy/keksobooking';
-  var StatusCode = {
-    OK: 200
-  };
-
   window.upload = function (data, successHandler, errorHandler) {
-    var xhr = new XMLHttpRequest();
 
-    xhr.responseType = 'json';
+    window.serverRequest.data(successHandler, errorHandler, 'POST', 'https://javascript.pages.academy/keksobooking');
 
-    // xhr.addEventListener('load', function () {
-    //   successHandler(xhr.response);
-    // });
-
-    xhr.addEventListener('load', function () {
-      if (xhr.status === StatusCode.OK) {
-        successHandler(xhr.response);
-      } else {
-        errorHandler();
-      }
-    });
-
-    xhr.addEventListener('error', function () {
-      errorHandler('Произошла ошибка соединения');
-    });
-
-    xhr.open('POST', URL);
-    xhr.send(data);
+    window.serverRequest.xhr().send(data);
   };
 })();

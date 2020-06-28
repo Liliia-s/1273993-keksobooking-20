@@ -97,22 +97,43 @@
     setRoomsAndGuests();
   };
 
+  var addEventListeners = function () {
+    inputTitle.addEventListener('input', inputTitleInputHandler);
+    fieldType.addEventListener('input', fieldTypeInputHandler);
+    fieldTimein.addEventListener('input', fieldTimeinInputHandler);
+    fieldTimeout.addEventListener('input', fieldTimeoutInputHandler);
+    fieldRooms.addEventListener('input', fieldRoomsInputHandler);
+    fieldGuests.addEventListener('input', fieldGuestsInputHandler);
+    mapPinMain.addEventListener('mousedown', window.pinMainMove.mousedownHandler);
+  };
+
+  var removeEventListeners = function () {
+    inputTitle.removeEventListener('input', inputTitleInputHandler);
+    fieldType.removeEventListener('input', fieldTypeInputHandler);
+    fieldTimein.removeEventListener('input', fieldTimeinInputHandler);
+    fieldTimeout.removeEventListener('input', fieldTimeoutInputHandler);
+    fieldRooms.removeEventListener('input', fieldRoomsInputHandler);
+    fieldGuests.removeEventListener('input', fieldGuestsInputHandler);
+  };
+
   window.form = {
     mapPinMain: mapPinMain,
     MAP_PIN_MAIN_WIDTH: MAP_PIN_MAIN_WIDTH,
     inputAdress: inputAdress,
-    inputTitle: inputTitle,
-    fieldType: fieldType,
-    fieldRooms: fieldRooms,
-    fieldGuests: fieldGuests,
-    fieldTimein: fieldTimein,
-    fieldTimeout: fieldTimeout,
-    fieldTypeInputHandler: fieldTypeInputHandler,
     setAdressMapPinMain: setAdressMapPinMain,
-    inputTitleHandler: inputTitleInputHandler,
-    fieldTimeinInputHandler: fieldTimeinInputHandler,
-    fieldTimeoutInputHandler: fieldTimeoutInputHandler,
-    fieldRoomsInputHandler: fieldRoomsInputHandler,
-    fieldGuestsInputHandler: fieldGuestsInputHandler
+    fieldTypeInputHandler: fieldTypeInputHandler,
+    addEventListeners: addEventListeners,
+    removeEventListeners: removeEventListeners
+    // inputTitle: inputTitle,
+    // fieldType: fieldType,
+    // fieldRooms: fieldRooms,
+    // fieldGuests: fieldGuests,
+    // fieldTimein: fieldTimein,
+    // fieldTimeout: fieldTimeout,
+    // inputTitleHandler: inputTitleInputHandler,
+    // fieldTimeinInputHandler: fieldTimeinInputHandler,
+    // fieldTimeoutInputHandler: fieldTimeoutInputHandler,
+    // fieldRoomsInputHandler: fieldRoomsInputHandler,
+    // fieldGuestsInputHandler: fieldGuestsInputHandler
   };
 })();
