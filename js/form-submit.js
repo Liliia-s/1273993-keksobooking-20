@@ -58,8 +58,12 @@
 
   var adForm = document.querySelector('.ad-form');
 
-  adForm.addEventListener('submit', function (evt) {
+  var adFormSubmitHandler = function (evt) {
     evt.preventDefault();
     window.upload(new FormData(adForm), successHandler, errorHandler);
-  });
+  };
+
+  window.formSubmit = {
+    handler: adFormSubmitHandler
+  };
 })();

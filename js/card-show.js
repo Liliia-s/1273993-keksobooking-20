@@ -41,6 +41,7 @@
     KEY_CODE_ESC: KEY_CODE_ESC,
     map: map,
     mapFilters: mapFilters,
+    closePopup: closePopup,
     mapPinClickHandler: mapPinClickHandler
   };
 })();

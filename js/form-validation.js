@@ -2,7 +2,6 @@
 
 (function () {
   var fieldsCheck = document.querySelectorAll('input, select');
-  var buttonSubmit = document.querySelector('.ad-form__submit');
 
   var buttonSubmitClickHandler = function () {
     fieldsCheck.forEach(function (element) {
@@ -14,5 +13,8 @@
     });
   };
 
-  buttonSubmit.addEventListener('click', buttonSubmitClickHandler);
+  window.formValidation = {
+    fieldsCheck: fieldsCheck,
+    buttonSubmit: buttonSubmitClickHandler
+  };
 })();

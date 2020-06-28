@@ -14,7 +14,7 @@
 
   var inputTitle = document.querySelector('#title');
 
-  inputTitle.addEventListener('input', function () {
+  var inputTitleInputHandler = function () {
     var valueLength = inputTitle.value.length;
 
     if (inputTitle.validity.valueMissing) {
@@ -27,7 +27,7 @@
       inputTitle.setCustomValidity('');
     }
     inputTitle.reportValidity();
-  });
+  };
 
   // заполнение поля Адрес
 
@@ -54,8 +54,6 @@
     fieldPrice.setAttribute('placeholder', pricesForTypes[fieldType.value]);
   };
 
-  fieldType.addEventListener('input', fieldTypeInputHandler);
-
   // валидация полей Время заезда и выезда
 
   var fieldTimein = document.querySelector('#timein');
@@ -68,9 +66,6 @@
   var fieldTimeoutInputHandler = function () {
     fieldTimein.value = fieldTimeout.value;
   };
-
-  fieldTimein.addEventListener('input', fieldTimeinInputHandler);
-  fieldTimeout.addEventListener('input', fieldTimeoutInputHandler);
 
   // валидация полей Количество комнат и Количество мест
 
@@ -102,19 +97,22 @@
     setRoomsAndGuests();
   };
 
-  fieldRooms.addEventListener('input', fieldRoomsInputHandler);
-  fieldGuests.addEventListener('input', fieldGuestsInputHandler);
-
   window.form = {
     mapPinMain: mapPinMain,
     MAP_PIN_MAIN_WIDTH: MAP_PIN_MAIN_WIDTH,
     inputAdress: inputAdress,
+    inputTitle: inputTitle,
     fieldType: fieldType,
     fieldRooms: fieldRooms,
     fieldGuests: fieldGuests,
     fieldTimein: fieldTimein,
     fieldTimeout: fieldTimeout,
     fieldTypeInputHandler: fieldTypeInputHandler,
-    setAdressMapPinMain: setAdressMapPinMain
+    setAdressMapPinMain: setAdressMapPinMain,
+    inputTitleHandler: inputTitleInputHandler,
+    fieldTimeinInputHandler: fieldTimeinInputHandler,
+    fieldTimeoutInputHandler: fieldTimeoutInputHandler,
+    fieldRoomsInputHandler: fieldRoomsInputHandler,
+    fieldGuestsInputHandler: fieldGuestsInputHandler
   };
 })();

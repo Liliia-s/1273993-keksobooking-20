@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-  var resetButton = document.querySelector('.ad-form__reset');
 
   var deactivateElement = function (element, className) {
     element.classList.add(className);
@@ -18,8 +17,11 @@
     var inputsOfAdForm = adForm.querySelectorAll('#title, #price, #avatar, #images, #description');
     var selectsOfAdForm = adForm.querySelectorAll('#room_number, #timein, #timeout');
     var inputsCheckbox = adForm.querySelectorAll('[type="checkbox"]');
+    var locationMapPinMainX = 570;
+    var locationMapPinMainY = 375;
 
-    window.pinMainMove.startCoords();
+    window.form.mapPinMain.style.top = locationMapPinMainY + 'px';
+    window.form.mapPinMain.style.left = locationMapPinMainX + 'px';
     window.form.setAdressMapPinMain(window.activation.MAP_PIN_MAIN_ROUND_HALF_HEIGHT);
     inputsOfAdForm.forEach(function (element) {
       element.value = '';
@@ -45,17 +47,34 @@
     }
   };
 
+  var removeEventListener = function () {
+    window.activation.resetButton.removeEventListener('click', deactivationPage);
+    window.activation.adForm.removeEventListener('submit', window.formSubmit.handler);
+    window.activation.buttonSubmit.removeEventListener('click', window.formValidation.buttonSubmit);
+    window.form.mapPinMain.removeEventListener('mousedown', window.pinMainMove.mousedownHandler);
+    window.activation.mapPins.removeEventListener('click', window.cardShow.mapPinClickHandler);
+    window.form.inputTitle.removeEventListener('input', window.form.inputTitleHandler);
+    window.form.fieldType.removeEventListener('input', window.form.fieldTypeInputHandler);
+    window.form.fieldTimein.removeEventListener('input', window.form.fieldTimeinInputHandler);
+    window.form.fieldTimeout.removeEventListener('input', window.form.fieldTimeoutInputHandler);
+    window.form.fieldRooms.removeEventListener('input', window.form.fieldRoomsInputHandler);
+    window.form.fieldGuests.removeEventListener('input', window.form.fieldGuestsInputHandler);
+  };
+
   var deactivationPage = function () {
     pinsRemove();
     window.activation.toggleStateForms();
     deactivateElement(window.cardShow.map, window.activation.NAME_CLASS_MAP);
     deactivateElement(window.activation.adForm, window.activation.NAME_CLASS_AD);
     resetAdForm();
+    window.formValidation.fieldsCheck.forEach(function (element) {
+      element.classList.remove('error-field');
+    });
+    window.cardShow.closePopup();
     window.form.mapPinMain.addEventListener('mousedown', window.activation.mapPinMousedownHandler);
     window.form.mapPinMain.addEventListener('keydown', window.activation.mapPinKeydownHandler);
+    removeEventListener();
   };
-
-  resetButton.addEventListener('click', deactivationPage);
 
   window.deactivation = {
     page: deactivationPage

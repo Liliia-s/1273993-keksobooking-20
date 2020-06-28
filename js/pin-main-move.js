@@ -5,7 +5,7 @@
   var MAX_VALUE_Y = 630;
   var mapPinMain = window.form.mapPinMain;
 
-  mapPinMain.addEventListener('mousedown', function (evt) {
+  var mapPinMainMousedownHandler = function (evt) {
     evt.preventDefault();
 
     var startCoords = {
@@ -67,11 +67,9 @@
 
     document.addEventListener('mousemove', documentMousemoveHandler);
     document.addEventListener('mouseup', documentMouseupHandler);
+  };
 
-    window.pinMainMove = {
-      startCoords: function () {
-        return startCoords;
-      }
-    };
-  });
+  window.pinMainMove = {
+    mousedownHandler: mapPinMainMousedownHandler
+  };
 })();

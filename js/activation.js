@@ -12,6 +12,8 @@
   var mapForm = document.querySelector('.map__filters');
   var elementsOfMapForm = mapForm.querySelectorAll('input, select');
   var mapPins = document.querySelector('.map__pins');
+  var resetButton = document.querySelector('.ad-form__reset');
+  var buttonSubmit = document.querySelector('.ad-form__submit');
 
   var activateElement = function (element, className) {
     element.classList.remove(className);
@@ -51,6 +53,23 @@
     document.body.insertAdjacentElement('afterbegin', node);
   };
 
+  var addOrRemoveEventListener = function () {
+    window.form.mapPinMain.removeEventListener('mousedown', mapPinMousedownHandler);
+    window.form.mapPinMain.removeEventListener('keydown', mapPinKeydownHandler);
+
+    mapPins.addEventListener('click', window.cardShow.mapPinClickHandler);
+    window.form.inputTitle.addEventListener('input', window.form.inputTitleHandler);
+    adForm.addEventListener('submit', window.formSubmit.handler);
+    resetButton.addEventListener('click', window.deactivation.page);
+    buttonSubmit.addEventListener('click', window.formValidation.buttonSubmit);
+    window.form.fieldType.addEventListener('input', window.form.fieldTypeInputHandler);
+    window.form.fieldTimein.addEventListener('input', window.form.fieldTimeinInputHandler);
+    window.form.fieldTimeout.addEventListener('input', window.form.fieldTimeoutInputHandler);
+    window.form.fieldRooms.addEventListener('input', window.form.fieldRoomsInputHandler);
+    window.form.fieldGuests.addEventListener('input', window.form.fieldGuestsInputHandler);
+    window.form.mapPinMain.addEventListener('mousedown', window.pinMainMove.mousedownHandler);
+  };
+
   var activateStatePage = function () {
     activateElement(window.cardShow.map, NAME_CLASS_MAP);
     activateElement(adForm, NAME_CLASS_AD);
@@ -58,9 +77,7 @@
     window.load(successHandler, errorHandler);
     // mapPins.appendChild(window.pin.create(window.dataCreate.allAnnouncements));
     window.form.setAdressMapPinMain(MAP_PIN_MAIN_HEIGHT);
-    window.form.mapPinMain.removeEventListener('mousedown', mapPinMousedownHandler);
-    window.form.mapPinMain.removeEventListener('keydown', mapPinKeydownHandler);
-    mapPins.addEventListener('click', window.cardShow.mapPinClickHandler);
+    addOrRemoveEventListener();
   };
 
   var mapPinMousedownHandler = function (evt) {
@@ -81,16 +98,19 @@
   window.form.mapPinMain.addEventListener('keydown', mapPinKeydownHandler);
 
   window.activation = {
-    mapPinMousedownHandler: mapPinMousedownHandler,
-    mapPinKeydownHandler: mapPinKeydownHandler,
     NAME_CLASS_MAP: NAME_CLASS_MAP,
     NAME_CLASS_AD: NAME_CLASS_AD,
+    MAP_PIN_MAIN_ROUND_HALF_HEIGHT: MAP_PIN_MAIN_ROUND_HALF_HEIGHT,
+    MAP_PIN_MAIN_HEIGHT: MAP_PIN_MAIN_HEIGHT,
     adForm: adForm,
+    mapPins: mapPins,
+    resetButton: resetButton,
+    buttonSubmit: buttonSubmit,
+    mapPinMousedownHandler: mapPinMousedownHandler,
+    mapPinKeydownHandler: mapPinKeydownHandler,
     toggleStateForms: toggleStateForms,
     getAllAnnouncements: function () {
       return allAnnouncements;
-    },
-    MAP_PIN_MAIN_ROUND_HALF_HEIGHT: MAP_PIN_MAIN_ROUND_HALF_HEIGHT,
-    MAP_PIN_MAIN_HEIGHT: MAP_PIN_MAIN_HEIGHT
+    }
   };
 })();
