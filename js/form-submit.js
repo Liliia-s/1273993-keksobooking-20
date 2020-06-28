@@ -12,7 +12,7 @@
 
   var successHandler = function () {
     createMessage('#success', '.success');
-    window.deactivation.page();
+    window.deactivation.getInactiveStatePage();
 
     document.addEventListener('click', documentClickHandler);
     document.addEventListener('keydown', documentKeydownHandler);
@@ -62,7 +62,7 @@
 
   var adFormSubmitHandler = function (evt) {
     evt.preventDefault();
-    window.upload(new FormData(adForm), successHandler, errorHandler);
+    window.backend.uploadData(new FormData(adForm), successHandler, errorHandler);
   };
 
   window.formSubmit = {

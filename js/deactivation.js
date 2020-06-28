@@ -4,37 +4,10 @@
   var LOCATION_MAP_PIN_MAIN_X = 570;
   var LOCATION_MAP_PIN_MAIN_Y = 375;
   var adForm = window.activation.adForm;
-  // var inputsOfAdForm = adForm.querySelectorAll('#title, #price, #avatar, #images, #description');
-  // var selectsOfAdForm = adForm.querySelectorAll('#room_number, #timein, #timeout');
-  // var inputsCheckbox = adForm.querySelectorAll('[type="checkbox"]');
 
   var deactivateElement = function (element, className) {
     element.classList.add(className);
   };
-
-  // var resetSelectIndex = function (name, index) {
-  //   if (name.selectedIndex !== index) {
-  //     name.selectedIndex = index;
-  //   }
-  // };
-
-  // var resetAdForm = function () {
-  //   inputsOfAdForm.forEach(function (element) {
-  //     element.value = '';
-  //   });
-
-  //   inputsCheckbox.forEach(function (element) {
-  //     element.checked = false;
-  //   });
-
-  //   selectsOfAdForm.forEach(function (element) {
-  //     resetSelectIndex(element, 0);
-  //   });
-
-  //   resetSelectIndex(window.form.fieldType, 1);
-  //   window.form.fieldTypeInputHandler();
-  //   resetSelectIndex(window.form.fieldGuests, 2);
-  // };
 
   var pinsRemove = function () {
     var mapPins = document.querySelectorAll('.map__pin:not(.map__pin--main');
@@ -76,6 +49,6 @@
   };
 
   window.deactivation = {
-    page: deactivatePage
+    getInactiveStatePage: deactivatePage
   };
 })();

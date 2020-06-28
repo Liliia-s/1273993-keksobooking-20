@@ -59,7 +59,7 @@
     window.form.addEventListeners();
     mapPins.addEventListener('click', window.cardShow.mapPinClickHandler);
     adForm.addEventListener('submit', window.formSubmit.handler);
-    resetButton.addEventListener('click', window.deactivation.page);
+    resetButton.addEventListener('click', window.deactivation.getInactiveStatePage);
     buttonSubmit.addEventListener('click', window.formValidation.buttonSubmit);
   };
 
@@ -67,7 +67,7 @@
     activateElement(window.cardShow.map, NAME_CLASS_MAP);
     activateElement(adForm, NAME_CLASS_AD);
     toggleStateOfElements(elementsOfAdForm);
-    window.load(successHandler, errorHandler);
+    window.backend.loadData(successHandler, errorHandler);
     // mapPins.appendChild(window.pin.create(window.dataCreate.allAnnouncements));
     window.form.setAdressMapPinMain(MAP_PIN_MAIN_HEIGHT);
     setActiveStateListeners();
