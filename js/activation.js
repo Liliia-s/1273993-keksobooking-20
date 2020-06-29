@@ -8,10 +8,12 @@
   var KEY_CODE_ENTER = 13;
   var KEY_CODE_MOUSE_LEFT = 0;
   var adForm = document.querySelector('.ad-form');
-  var elementsOfAdForm = adForm.querySelectorAll('input, select, textarea');
+  var elementsOfAdForm = adForm.querySelectorAll('input, select, textarea, button');
   var mapForm = document.querySelector('.map__filters');
   var elementsOfMapForm = mapForm.querySelectorAll('input, select');
   var mapPins = document.querySelector('.map__pins');
+  var resetButton = document.querySelector('.ad-form__reset');
+  var buttonSubmit = document.querySelector('.ad-form__submit');
 
   var activateElement = function (element, className) {
     element.classList.remove(className);
@@ -23,9 +25,13 @@
     }
   };
   // window.cardShow.mapFilters
-  toggleStateOfElements(elementsOfAdForm);
-  toggleStateOfElements(elementsOfMapForm);
-  window.formValidation.setAdressMapPinMain(MAP_PIN_MAIN_ROUND_HALF_HEIGHT);
+  var toggleStateForms = function () {
+    toggleStateOfElements(elementsOfAdForm);
+    toggleStateOfElements(elementsOfMapForm);
+  };
+
+  toggleStateForms();
+  window.form.setAdressMapPinMain(MAP_PIN_MAIN_ROUND_HALF_HEIGHT);
 
   var allAnnouncements;
 
@@ -47,16 +53,24 @@
     document.body.insertAdjacentElement('afterbegin', node);
   };
 
+  var setActiveStateListeners = function () {
+    window.form.mapPinMain.removeEventListener('mousedown', mapPinMousedownHandler);
+    window.form.mapPinMain.removeEventListener('keydown', mapPinKeydownHandler);
+    window.form.addEventListeners();
+    mapPins.addEventListener('click', window.cardShow.mapPinClickHandler);
+    adForm.addEventListener('submit', window.formSubmit.handler);
+    resetButton.addEventListener('click', window.deactivation.getInactiveStatePage);
+    buttonSubmit.addEventListener('click', window.formValidation.buttonSubmit);
+  };
+
   var activateStatePage = function () {
     activateElement(window.cardShow.map, NAME_CLASS_MAP);
     activateElement(adForm, NAME_CLASS_AD);
     toggleStateOfElements(elementsOfAdForm);
-    window.load(successHandler, errorHandler);
+    window.backend.loadData(successHandler, errorHandler);
     // mapPins.appendChild(window.pin.create(window.dataCreate.allAnnouncements));
-    window.formValidation.setAdressMapPinMain(MAP_PIN_MAIN_HEIGHT);
-    window.formValidation.mapPinMain.removeEventListener('mousedown', mapPinMousedownHandler);
-    window.formValidation.mapPinMain.removeEventListener('keydown', mapPinKeydownHandler);
-    mapPins.addEventListener('click', window.cardShow.mapPinClickHandler);
+    window.form.setAdressMapPinMain(MAP_PIN_MAIN_HEIGHT);
+    setActiveStateListeners();
   };
 
   var mapPinMousedownHandler = function (evt) {
@@ -73,13 +87,23 @@
     }
   };
 
-  window.formValidation.mapPinMain.addEventListener('mousedown', mapPinMousedownHandler);
-  window.formValidation.mapPinMain.addEventListener('keydown', mapPinKeydownHandler);
+  window.form.mapPinMain.addEventListener('mousedown', mapPinMousedownHandler);
+  window.form.mapPinMain.addEventListener('keydown', mapPinKeydownHandler);
 
-  window.activationPage = {
+  window.activation = {
+    NAME_CLASS_MAP: NAME_CLASS_MAP,
+    NAME_CLASS_AD: NAME_CLASS_AD,
+    MAP_PIN_MAIN_ROUND_HALF_HEIGHT: MAP_PIN_MAIN_ROUND_HALF_HEIGHT,
+    MAP_PIN_MAIN_HEIGHT: MAP_PIN_MAIN_HEIGHT,
+    adForm: adForm,
+    mapPins: mapPins,
+    resetButton: resetButton,
+    buttonSubmit: buttonSubmit,
+    mapPinMousedownHandler: mapPinMousedownHandler,
+    mapPinKeydownHandler: mapPinKeydownHandler,
+    toggleStateForms: toggleStateForms,
     getAllAnnouncements: function () {
       return allAnnouncements;
-    },
-    MAP_PIN_MAIN_HEIGHT: MAP_PIN_MAIN_HEIGHT
+    }
   };
 })();
