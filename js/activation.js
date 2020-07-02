@@ -7,6 +7,8 @@
   var NAME_CLASS_AD = 'ad-form--disabled';
   var KEY_CODE_ENTER = 13;
   var KEY_CODE_MOUSE_LEFT = 0;
+  var MAX_SIMILAR_PIN_COUNT = 5;
+  var TYPE_ANY = 'any';
   var adForm = document.querySelector('.ad-form');
   var elementsOfAdForm = adForm.querySelectorAll('input, select, textarea, button');
   var mapForm = document.querySelector('.map__filters');
@@ -14,6 +16,8 @@
   var mapPins = document.querySelector('.map__pins');
   var resetButton = document.querySelector('.ad-form__reset');
   var buttonSubmit = document.querySelector('.ad-form__submit');
+  var filterTypeOfHousing = mapForm.querySelector('#housing-type');
+  var allAnnouncements;
 
   var activateElement = function (element, className) {
     element.classList.remove(className);
@@ -32,11 +36,6 @@
 
   toggleStateForms();
   window.form.setAdressMapPinMain(MAP_PIN_MAIN_ROUND_HALF_HEIGHT);
-
-  var MAX_SIMILAR_PIN_COUNT = 5;
-  var TYPE_ANY = 'any';
-  var filterTypeOfHousing = mapForm.querySelector('#housing-type');
-  var allAnnouncements;
 
   var successHandler = function (adverts) {
     var announcements = adverts;
