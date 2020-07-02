@@ -4,6 +4,7 @@
   var LOCATION_MAP_PIN_MAIN_X = 570;
   var LOCATION_MAP_PIN_MAIN_Y = 375;
   var adForm = window.activation.adForm;
+  var mapForm = window.activation.mapForm;
 
   var deactivateElement = function (element, className) {
     element.classList.add(className);
@@ -37,6 +38,7 @@
     deactivateElement(window.cardShow.map, window.activation.NAME_CLASS_MAP);
     deactivateElement(window.activation.adForm, window.activation.NAME_CLASS_AD);
     adForm.reset();
+    mapForm.reset();
     window.form.fieldTypeInputHandler();
     setDefaultLocation();
     window.formValidation.fieldsCheck.forEach(function (element) {
