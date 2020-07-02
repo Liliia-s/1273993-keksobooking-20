@@ -49,6 +49,7 @@
   };
 
   window.deactivation = {
+    pinsRemove: pinsRemove,
     getInactiveStatePage: deactivatePage
   };
 })();

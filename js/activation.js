@@ -24,7 +24,7 @@
       elements[i].toggleAttribute('disabled');
     }
   };
-  // window.cardShow.mapFilters
+
   var toggleStateForms = function () {
     toggleStateOfElements(elementsOfAdForm);
     toggleStateOfElements(elementsOfMapForm);
@@ -33,13 +33,26 @@
   toggleStateForms();
   window.form.setAdressMapPinMain(MAP_PIN_MAIN_ROUND_HALF_HEIGHT);
 
+  var MAX_SIMILAR_PIN_COUNT = 5;
+  var TYPE_ANY = 'any';
+  var filterTypeOfHousing = mapForm.querySelector('#housing-type');
   var allAnnouncements;
 
   var successHandler = function (adverts) {
     var announcements = adverts;
-    allAnnouncements = announcements;
-    mapPins.appendChild(window.pin.create(announcements));
+    mapPins.appendChild(window.pin.create(announcements.slice(0, MAX_SIMILAR_PIN_COUNT)));
+    var filterPins = function () {
+      var filterTypes = function (advert) {
+        return advert.offer.type === filterTypeOfHousing.value || TYPE_ANY === filterTypeOfHousing.value;
+      };
+      var sortPins = announcements.filter(filterTypes).slice(0, MAX_SIMILAR_PIN_COUNT);
+      allAnnouncements = sortPins;
+      window.cardShow.closePopup();
+      window.deactivation.pinsRemove();
+      mapPins.appendChild(window.pin.create(sortPins));
+    };
     toggleStateOfElements(elementsOfMapForm);
+    filterTypeOfHousing.addEventListener('input', filterPins);
   };
 
   var errorHandler = function (errorMessage) {
@@ -95,6 +108,7 @@
     NAME_CLASS_AD: NAME_CLASS_AD,
     MAP_PIN_MAIN_ROUND_HALF_HEIGHT: MAP_PIN_MAIN_ROUND_HALF_HEIGHT,
     MAP_PIN_MAIN_HEIGHT: MAP_PIN_MAIN_HEIGHT,
+    mapForm: mapForm,
     adForm: adForm,
     mapPins: mapPins,
     resetButton: resetButton,
@@ -104,6 +118,6 @@
     toggleStateForms: toggleStateForms,
     getAllAnnouncements: function () {
       return allAnnouncements;
-    }
+    },
   };
 })();
