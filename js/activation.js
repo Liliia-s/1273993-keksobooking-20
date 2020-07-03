@@ -7,6 +7,8 @@
   var NAME_CLASS_AD = 'ad-form--disabled';
   var KEY_CODE_ENTER = 13;
   var KEY_CODE_MOUSE_LEFT = 0;
+  var MAX_SIMILAR_PIN_COUNT = 5;
+  var TYPE_ANY = 'any';
   var adForm = document.querySelector('.ad-form');
   var elementsOfAdForm = adForm.querySelectorAll('input, select, textarea, button');
   var mapForm = document.querySelector('.map__filters');
@@ -14,6 +16,8 @@
   var mapPins = document.querySelector('.map__pins');
   var resetButton = document.querySelector('.ad-form__reset');
   var buttonSubmit = document.querySelector('.ad-form__submit');
+  var filterTypeOfHousing = mapForm.querySelector('#housing-type');
+  var allAnnouncements;
 
   var activateElement = function (element, className) {
     element.classList.remove(className);
@@ -24,7 +28,7 @@
       elements[i].toggleAttribute('disabled');
     }
   };
-  // window.cardShow.mapFilters
+
   var toggleStateForms = function () {
     toggleStateOfElements(elementsOfAdForm);
     toggleStateOfElements(elementsOfMapForm);
@@ -33,13 +37,32 @@
   toggleStateForms();
   window.form.setAdressMapPinMain(MAP_PIN_MAIN_ROUND_HALF_HEIGHT);
 
-  var allAnnouncements;
+  var filterTypes = function (advert) {
+    var filteredAdsByType = [];
+    for (var i = 0; i < advert.length; i++) {
+      if (advert[i].offer.type === filterTypeOfHousing.value || TYPE_ANY === filterTypeOfHousing.value) {
+        filteredAdsByType.push(advert[i]);
+      } if (filteredAdsByType.length === MAX_SIMILAR_PIN_COUNT) {
+        break;
+      }
+    }
+    return filteredAdsByType;
+  };
+
 
   var successHandler = function (adverts) {
     var announcements = adverts;
     allAnnouncements = announcements;
-    mapPins.appendChild(window.pin.create(announcements));
+    mapPins.appendChild(window.pin.create(allAnnouncements.slice(0, MAX_SIMILAR_PIN_COUNT)));
+    var filterTypeInputHandler = function () {
+      var filterPins = filterTypes(announcements);
+      allAnnouncements = filterPins;
+      window.cardShow.closePopup();
+      window.deactivation.pinsRemove();
+      mapPins.appendChild(window.pin.create(allAnnouncements));
+    };
     toggleStateOfElements(elementsOfMapForm);
+    filterTypeOfHousing.addEventListener('input', filterTypeInputHandler);
   };
 
   var errorHandler = function (errorMessage) {
@@ -95,6 +118,7 @@
     NAME_CLASS_AD: NAME_CLASS_AD,
     MAP_PIN_MAIN_ROUND_HALF_HEIGHT: MAP_PIN_MAIN_ROUND_HALF_HEIGHT,
     MAP_PIN_MAIN_HEIGHT: MAP_PIN_MAIN_HEIGHT,
+    mapForm: mapForm,
     adForm: adForm,
     mapPins: mapPins,
     resetButton: resetButton,
@@ -104,6 +128,6 @@
     toggleStateForms: toggleStateForms,
     getAllAnnouncements: function () {
       return allAnnouncements;
-    }
+    },
   };
 })();

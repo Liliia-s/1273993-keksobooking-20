@@ -124,16 +124,5 @@
     fieldTypeInputHandler: fieldTypeInputHandler,
     addEventListeners: addEventListeners,
     removeEventListeners: removeEventListeners
-    // inputTitle: inputTitle,
-    // fieldType: fieldType,
-    // fieldRooms: fieldRooms,
-    // fieldGuests: fieldGuests,
-    // fieldTimein: fieldTimein,
-    // fieldTimeout: fieldTimeout,
-    // inputTitleHandler: inputTitleInputHandler,
-    // fieldTimeinInputHandler: fieldTimeinInputHandler,
-    // fieldTimeoutInputHandler: fieldTimeoutInputHandler,
-    // fieldRoomsInputHandler: fieldRoomsInputHandler,
-    // fieldGuestsInputHandler: fieldGuestsInputHandler
   };
 })();

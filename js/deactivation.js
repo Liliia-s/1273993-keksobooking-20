@@ -4,6 +4,7 @@
   var LOCATION_MAP_PIN_MAIN_X = 570;
   var LOCATION_MAP_PIN_MAIN_Y = 375;
   var adForm = window.activation.adForm;
+  var mapForm = window.activation.mapForm;
 
   var deactivateElement = function (element, className) {
     element.classList.add(className);
@@ -23,6 +24,7 @@
   };
 
   var removeEventListener = function () {
+    // filterTypeOfHousing.addEventListener('input', filterTypeInputHandler);
     window.activation.resetButton.removeEventListener('click', deactivatePage);
     window.activation.adForm.removeEventListener('submit', window.formSubmit.handler);
     window.activation.buttonSubmit.removeEventListener('click', window.formValidation.buttonSubmit);
@@ -37,6 +39,7 @@
     deactivateElement(window.cardShow.map, window.activation.NAME_CLASS_MAP);
     deactivateElement(window.activation.adForm, window.activation.NAME_CLASS_AD);
     adForm.reset();
+    mapForm.reset();
     window.form.fieldTypeInputHandler();
     setDefaultLocation();
     window.formValidation.fieldsCheck.forEach(function (element) {
@@ -49,6 +52,7 @@
   };
 
   window.deactivation = {
+    pinsRemove: pinsRemove,
     getInactiveStatePage: deactivatePage
   };
 })();
