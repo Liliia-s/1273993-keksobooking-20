@@ -37,21 +37,29 @@
   toggleStateForms();
   window.form.setAdressMapPinMain(MAP_PIN_MAIN_ROUND_HALF_HEIGHT);
 
+  var filterTypes = function (advert) {
+    var filteredAdsByType = [];
+    for (var i = 0; i < advert.length; i++) {
+      if (advert[i].offer.type === filterTypeOfHousing.value || TYPE_ANY === filterTypeOfHousing.value && filteredAdsByType.length !== MAX_SIMILAR_PIN_COUNT) {
+        filteredAdsByType.push(advert[i]);
+      }
+    }
+    return filteredAdsByType;
+  };
+
   var successHandler = function (adverts) {
     var announcements = adverts;
-    mapPins.appendChild(window.pin.create(announcements.slice(0, MAX_SIMILAR_PIN_COUNT)));
-    var filterPins = function () {
-      var filterTypes = function (advert) {
-        return advert.offer.type === filterTypeOfHousing.value || TYPE_ANY === filterTypeOfHousing.value;
-      };
-      var sortPins = announcements.filter(filterTypes).slice(0, MAX_SIMILAR_PIN_COUNT);
-      allAnnouncements = sortPins;
+    allAnnouncements = announcements;
+    mapPins.appendChild(window.pin.create(allAnnouncements.slice(0, MAX_SIMILAR_PIN_COUNT)));
+    var filterTypeInputHandler = function () {
+      var filterPins = filterTypes(announcements);
+      allAnnouncements = filterPins;
       window.cardShow.closePopup();
       window.deactivation.pinsRemove();
-      mapPins.appendChild(window.pin.create(sortPins));
+      mapPins.appendChild(window.pin.create(allAnnouncements));
     };
     toggleStateOfElements(elementsOfMapForm);
-    filterTypeOfHousing.addEventListener('input', filterPins);
+    filterTypeOfHousing.addEventListener('input', filterTypeInputHandler);
   };
 
   var errorHandler = function (errorMessage) {

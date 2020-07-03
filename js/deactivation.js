@@ -24,6 +24,7 @@
   };
 
   var removeEventListener = function () {
+    // filterTypeOfHousing.addEventListener('input', filterTypeInputHandler);
     window.activation.resetButton.removeEventListener('click', deactivatePage);
     window.activation.adForm.removeEventListener('submit', window.formSubmit.handler);
     window.activation.buttonSubmit.removeEventListener('click', window.formValidation.buttonSubmit);
