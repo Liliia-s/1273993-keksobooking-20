@@ -37,16 +37,55 @@
   toggleStateForms();
   window.form.setAdressMapPinMain(MAP_PIN_MAIN_ROUND_HALF_HEIGHT);
 
-  var filterTypes = function (advert) {
+  var filterType = function (adverts) {
     var filteredAdsByType = [];
-    for (var i = 0; i < advert.length; i++) {
-      if (advert[i].offer.type === filterTypeOfHousing.value || TYPE_ANY === filterTypeOfHousing.value) {
-        filteredAdsByType.push(advert[i]);
+    for (var i = 0; i < adverts.length; i++) {
+      if (adverts[i].offer.type === filterTypeOfHousing.value || TYPE_ANY === filterTypeOfHousing.value) {
+        filteredAdsByType.push(adverts[i]);
       } if (filteredAdsByType.length === MAX_SIMILAR_PIN_COUNT) {
         break;
       }
     }
     return filteredAdsByType;
+  };
+
+  var filterTypeOfPrice = mapForm.querySelector('#housing-price');
+  var PRICE_MIN = 10000;
+  var PRICE_MAX = 50000;
+  // var prices = {
+  //   middle: 10000,
+  //   low: 10000,
+  //   high: 50000
+  // };
+  var filterPrice = function (adverts) {
+    var filteredAdsByPrice = [];
+    for (var i = 0; i < adverts.length; i++) {
+      console.log('номер i = ' + i);
+      if (filterTypeOfPrice.value === 'high' && adverts[i].offer.price >= PRICE_MAX) {
+        filteredAdsByPrice.push(adverts[i]);
+      } else if (filterTypeOfPrice.value === 'low' && adverts[i].offer.price < PRICE_MIN) {
+        filteredAdsByPrice.push(adverts[i]);
+      } else if (filterTypeOfPrice.value === 'middle' && (PRICE_MIN <= adverts[i].offer.price && adverts[i].offer.price < PRICE_MAX)) {
+        filteredAdsByPrice.push(adverts[i]);
+      } else if (filterTypeOfPrice.value === TYPE_ANY) {
+        filteredAdsByPrice.push(adverts[i]);
+      } if (filteredAdsByPrice.length === MAX_SIMILAR_PIN_COUNT) {
+        break;
+      }
+      // else if (prices[filterTypeOfPrice.value] && adverts[i].offer.price >= prices.high) {
+      //   filteredAdsByPrice.push(adverts[i]);
+      // } else if (prices[filterTypeOfPrice.value] && prices.middle <= adverts[i].offer.price >= prices.high) {
+      //   filteredAdsByPrice.push(adverts[i]);
+      // }
+      // if (PRICE_MIN < adverts[i].offer.price < PRICE_MAX) {
+      //   filteredAdsByPrice.push(adverts[i]);
+      // } else if (adverts[i].offer.price > PRICE_MAX) {
+      //   filteredAdsByPrice.push(adverts[i]);
+      // } else if (adverts[i].offer.price < PRICE_MIN) {
+      //   filteredAdsByPrice.push(adverts[i]);
+      // }
+    }
+    return filteredAdsByPrice;
   };
 
 
@@ -55,7 +94,8 @@
     allAnnouncements = announcements;
     mapPins.appendChild(window.pin.create(allAnnouncements.slice(0, MAX_SIMILAR_PIN_COUNT)));
     var filterTypeInputHandler = function () {
-      var filterPins = filterTypes(announcements);
+      // var filterPins = filterType(announcements);
+      var filterPins = filterPrice(announcements);
       allAnnouncements = filterPins;
       window.cardShow.closePopup();
       window.deactivation.pinsRemove();
@@ -63,6 +103,7 @@
     };
     toggleStateOfElements(elementsOfMapForm);
     filterTypeOfHousing.addEventListener('input', filterTypeInputHandler);
+    filterTypeOfPrice.addEventListener('input', filterTypeInputHandler);
   };
 
   var errorHandler = function (errorMessage) {
