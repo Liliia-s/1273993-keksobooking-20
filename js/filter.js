@@ -8,11 +8,11 @@
 //   // mapPins уже есть в activation
 //   var allAnnouncements;
 
-//   var filterTypes = function (advert) {
+//   var filterTypes = function (adverts) {
 //     var filteredAdsByType = [];
-//     for (var i = 0; i < advert.length; i++) {
-//       if (advert[i].offer.type === filterTypeOfHousing.value || TYPE_ANY === filterTypeOfHousing.value && filteredAdsByType.length !== MAX_SIMILAR_PIN_COUNT) {
-//         filteredAdsByType.push(advert[i]);
+//     for (var i = 0; i < adverts.length; i++) {
+//       if (adverts[i].offer.type === filterTypeOfHousing.value || TYPE_ANY === filterTypeOfHousing.value && filteredAdsByType.length !== MAX_SIMILAR_PIN_COUNT) {
+//         filteredAdsByType.push(adverts[i]);
 //       }
 //     }
 //     return filteredAdsByType;
