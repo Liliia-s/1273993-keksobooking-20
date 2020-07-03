@@ -40,12 +40,15 @@
   var filterTypes = function (advert) {
     var filteredAdsByType = [];
     for (var i = 0; i < advert.length; i++) {
-      if (advert[i].offer.type === filterTypeOfHousing.value || TYPE_ANY === filterTypeOfHousing.value && filteredAdsByType.length !== MAX_SIMILAR_PIN_COUNT) {
+      if (advert[i].offer.type === filterTypeOfHousing.value || TYPE_ANY === filterTypeOfHousing.value) {
         filteredAdsByType.push(advert[i]);
+      } if (filteredAdsByType.length === MAX_SIMILAR_PIN_COUNT) {
+        break;
       }
     }
     return filteredAdsByType;
   };
+
 
   var successHandler = function (adverts) {
     var announcements = adverts;
