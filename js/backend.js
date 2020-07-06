@@ -5,7 +5,6 @@
   var METHOD_POST = 'POST';
   var URL_FOR_GET = 'https://javascript.pages.academy/keksobooking/data';
   var URL_FOR_POST = 'https://javascript.pages.academy/keksobooking';
-
   var StatusCode = {
     OK: 200,
     BAD_REQUEST: 400,
@@ -13,6 +12,7 @@
     NOT_FOUND: 404,
     SERVER_ERROR: 500
   };
+  var dataAds = [];
 
   var requestData = function (successHandler, errorHandler, method, url) {
     var xhr = new XMLHttpRequest();
@@ -63,6 +63,7 @@
 
   window.backend = {
     loadData: loadData,
-    uploadData: uploadData
+    uploadData: uploadData,
+    dataAds: dataAds
   };
 })();

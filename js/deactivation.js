@@ -3,9 +3,9 @@
 (function () {
   var LOCATION_MAP_PIN_MAIN_X = 570;
   var LOCATION_MAP_PIN_MAIN_Y = 375;
-  var adForm = window.activation.adForm;
-  var mapForm = window.activation.mapForm;
-
+  var adForm = window.util.adForm;
+  var mapForm = window.util.mapForm;
+  var mapPinMain = window.util.mapPinMain;
   var deactivateElement = function (element, className) {
     element.classList.add(className);
   };
@@ -18,18 +18,18 @@
   };
 
   var setDefaultLocation = function () {
-    window.form.mapPinMain.style.top = LOCATION_MAP_PIN_MAIN_Y + 'px';
-    window.form.mapPinMain.style.left = LOCATION_MAP_PIN_MAIN_X + 'px';
+    mapPinMain.style.top = LOCATION_MAP_PIN_MAIN_Y + 'px';
+    mapPinMain.style.left = LOCATION_MAP_PIN_MAIN_X + 'px';
     window.form.setAdressMapPinMain(window.activation.MAP_PIN_MAIN_ROUND_HALF_HEIGHT);
   };
 
   var removeEventListener = function () {
     // filterTypeOfHousing.addEventListener('input', filterTypeInputHandler);
     window.activation.resetButton.removeEventListener('click', deactivatePage);
-    window.activation.adForm.removeEventListener('submit', window.formSubmit.handler);
+    adForm.removeEventListener('submit', window.formSubmit.handler);
     window.activation.buttonSubmit.removeEventListener('click', window.formValidation.buttonSubmit);
-    window.form.mapPinMain.removeEventListener('mousedown', window.pinMainMove.mousedownHandler);
-    window.activation.mapPins.removeEventListener('click', window.cardShow.mapPinClickHandler);
+    mapPinMain.removeEventListener('mousedown', window.pinMainMove.mousedownHandler);
+    window.util.mapPins.removeEventListener('click', window.cardShow.mapPinClickHandler);
     window.form.removeEventListeners();
   };
 
@@ -37,7 +37,7 @@
     pinsRemove();
     window.activation.toggleStateForms();
     deactivateElement(window.cardShow.map, window.activation.NAME_CLASS_MAP);
-    deactivateElement(window.activation.adForm, window.activation.NAME_CLASS_AD);
+    deactivateElement(adForm, window.activation.NAME_CLASS_AD);
     adForm.reset();
     mapForm.reset();
     window.form.fieldTypeInputHandler();
@@ -46,8 +46,8 @@
       element.classList.remove('error-field');
     });
     window.cardShow.closePopup();
-    window.form.mapPinMain.addEventListener('mousedown', window.activation.mapPinMousedownHandler);
-    window.form.mapPinMain.addEventListener('keydown', window.activation.mapPinKeydownHandler);
+    mapPinMain.addEventListener('mousedown', window.activation.mapPinMousedownHandler);
+    mapPinMain.addEventListener('keydown', window.activation.mapPinKeydownHandler);
     removeEventListener();
   };
 

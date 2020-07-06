@@ -1,12 +1,12 @@
 'use strict';
 
 (function () {
-  var ONE_HUNDRED_ROOMS = '100';
+  var ONE_HUNDRED_ROOMS = 100;
   var MAP_PIN_MAIN_WIDTH = 65;
   var MIN_TITLE_LENGTH = 30;
   var MAX_TITLE_LENGTH = 100;
-  var mapPinMain = document.querySelector('.map__pin--main');
   var inputAdress = document.querySelector('#address');
+  var mapPinMain = window.util.mapPinMain;
   var mapPinMainOffSetLeft = mapPinMain.offsetLeft;
   var mapPinMainOffSetTop = mapPinMain.offsetTop;
 
@@ -75,9 +75,9 @@
   var setRoomsAndGuests = function () {
     var indexGuest = fieldGuests.selectedIndex;
     var indexRoom = fieldRooms.selectedIndex;
-    if (fieldRooms.value === ONE_HUNDRED_ROOMS && fieldGuests.value !== '0') {
+    if (parseInt(fieldRooms.value, 10) === ONE_HUNDRED_ROOMS && fieldGuests.value !== '0') {
       fieldRooms.setCustomValidity('Для ' + fieldRooms.options[indexRoom].label + ' допустимое значение кол-во мест: ' + fieldGuests.options[indexRoom].label);
-    } else if (fieldGuests.value === '0' && fieldRooms.value !== ONE_HUNDRED_ROOMS) {
+    } else if (fieldGuests.value === '0' && parseInt(fieldRooms.value, 10) !== ONE_HUNDRED_ROOMS) {
       fieldRooms.setCustomValidity('Для ' + fieldGuests.options[indexGuest].label + ' допустимое значение кол-во комнат: ' + fieldRooms.options[indexGuest].label);
     } else if (fieldRooms.value < fieldGuests.value) {
       fieldRooms.setCustomValidity('Допустимое кол-во гостей не должно превышать кол-во комнат');
@@ -117,7 +117,6 @@
   };
 
   window.form = {
-    mapPinMain: mapPinMain,
     MAP_PIN_MAIN_WIDTH: MAP_PIN_MAIN_WIDTH,
     inputAdress: inputAdress,
     setAdressMapPinMain: setAdressMapPinMain,
