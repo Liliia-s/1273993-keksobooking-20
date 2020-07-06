@@ -27,7 +27,7 @@
     if (filterOfPrice.value === PriceValue.LOW) {
       return advert.offer.price < PriceValue.MIN;
     } else if (filterOfPrice.value === PriceValue.MIDDLE) {
-      return PriceValue.MIN <= advert.offer.price < PriceValue.MAX;
+      return PriceValue.MIN <= advert.offer.price && advert.offer.price < PriceValue.MAX;
     } else if (filterOfPrice.value === PriceValue.HIGH) {
       return advert.offer.price >= PriceValue.MAX;
     } else {

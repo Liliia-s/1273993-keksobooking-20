@@ -54,6 +54,8 @@
     window.util.mapPinMain.removeEventListener('mousedown', mapPinMousedownHandler);
     window.util.mapPinMain.removeEventListener('keydown', mapPinKeydownHandler);
     window.form.addEventListeners();
+    window.loadPhoto.chooserAvatar.addEventListener('change', window.loadPhoto.avatar);
+    window.loadPhoto.chooserHousing.addEventListener('change', window.loadPhoto.housing);
     mapPins.addEventListener('click', window.cardShow.mapPinClickHandler);
     adForm.addEventListener('submit', window.formSubmit.handler);
     resetButton.addEventListener('click', window.deactivation.getInactiveStatePage);
