@@ -34,7 +34,7 @@
 
   var documentKeydownHandler = function (evt) {
     evt.preventDefault();
-    if (evt.keyCode === window.cardShow.KEY_CODE_ESC) {
+    if (evt.keyCode === window.util.KEY_CODE_ESC) {
       closeMessage();
     }
   };

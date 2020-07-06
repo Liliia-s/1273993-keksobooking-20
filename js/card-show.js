@@ -1,12 +1,11 @@
 'use strict';
 
 (function () {
-  var KEY_CODE_ESC = 27;
   var mapFilters = document.querySelector('.map__filters-container');
   var map = document.querySelector('.map');
 
   var popupKeydownEscHandler = function (evt) {
-    if (evt.keyCode === KEY_CODE_ESC) {
+    if (evt.keyCode === window.util.KEY_CODE_ESC) {
       evt.preventDefault();
       closePopup();
     }
@@ -21,7 +20,7 @@
     if (evt.target.matches('.map__pin:not(.map__pin--main), img[data-index]')) {
       var indexPin = evt.target.dataset.index;
       closePopup();
-      var card = window.card.create(window.activation.getAllAnnouncements()[indexPin]);
+      var card = window.card.create(window.filters.getAllAnnouncements()[indexPin]);
       map.insertBefore(card, mapFilters);
       var buttonClosePopup = card.querySelector('.popup__close');
       buttonClosePopup.addEventListener('click', buttonCloseClickHandler);
@@ -38,7 +37,6 @@
   };
 
   window.cardShow = {
-    KEY_CODE_ESC: KEY_CODE_ESC,
     map: map,
     mapFilters: mapFilters,
     closePopup: closePopup,

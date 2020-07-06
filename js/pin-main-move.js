@@ -3,7 +3,7 @@
 (function () {
   var MIN_VALUE_Y = 130;
   var MAX_VALUE_Y = 630;
-  var mapPinMain = window.form.mapPinMain;
+  var mapPinMain = window.util.mapPinMain;
 
   var mapPinMainMousedownHandler = function (evt) {
     evt.preventDefault();
@@ -31,9 +31,7 @@
       var mapPinMainHalfWidth = Math.round(window.form.MAP_PIN_MAIN_WIDTH / 2);
       var mapPinMainHeight = window.activation.MAP_PIN_MAIN_HEIGHT;
       var coordinateMinX = mapPinMain.parentElement.offsetLeft - mapPinMainHalfWidth;
-      // console.log('coordinateMinX = ' + coordinateMinX);
       var coordinateMaxX = mapPinMain.parentElement.offsetWidth - mapPinMainHalfWidth;
-      // console.log('coordinateMaxX = ' + coordinateMaxX);
 
       var coordinateMinY = MIN_VALUE_Y - mapPinMainHeight;
       var coordinateMaxY = MAX_VALUE_Y - mapPinMainHeight;
