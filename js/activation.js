@@ -12,10 +12,12 @@
   var elementsOfMapForm = mapForm.querySelectorAll('input, select');
   var resetButton = document.querySelector('.ad-form__reset');
   var buttonSubmit = document.querySelector('.ad-form__submit');
+  var NAME_CLASS_HIDDEN = 'hidden';
+  var filterInputHandler;
 
   var activateElement = function (element, className) {
     element.classList.remove(className);
-  };
+  }; // переделать в общую функцию с deactivateElement в deactivation и перенести в util
 
   var toggleStateOfElements = function (elements) {
     for (var i = 0; i < elements.length; i++) {
@@ -30,11 +32,12 @@
 
   toggleStateForms();
   window.form.setAdressMapPinMain(MAP_PIN_MAIN_ROUND_HALF_HEIGHT);
+  mapForm.classList.add('hidden'); // переделать
 
   var successHandler = function (adverts) {
     window.backend.dataAds = adverts;
     window.filters.getPins();
-    var filterInputHandler = window.debounce(window.filters.getPins);
+    filterInputHandler = window.debounce(window.filters.getPins);
     toggleStateOfElements(elementsOfMapForm);
     mapForm.addEventListener('change', filterInputHandler);
   };
@@ -54,8 +57,8 @@
     window.util.mapPinMain.removeEventListener('mousedown', mapPinMousedownHandler);
     window.util.mapPinMain.removeEventListener('keydown', mapPinKeydownHandler);
     window.form.addEventListeners();
-    window.loadPhoto.chooserAvatar.addEventListener('change', window.loadPhoto.avatar);
-    window.loadPhoto.chooserHousing.addEventListener('change', window.loadPhoto.housing);
+    window.files.chooserAvatar.addEventListener('change', window.files.loadAvatar);
+    window.files.chooserHousing.addEventListener('change', window.files.loadPhotoOfhousing);
     mapPins.addEventListener('click', window.cardShow.mapPinClickHandler);
     adForm.addEventListener('submit', window.formSubmit.handler);
     resetButton.addEventListener('click', window.deactivation.getInactiveStatePage);
@@ -63,9 +66,10 @@
   };
 
   var activateStatePage = function () {
-    activateElement(window.cardShow.map, NAME_CLASS_MAP);
-    activateElement(adForm, NAME_CLASS_AD);
+    activateElement(window.cardShow.map, NAME_CLASS_MAP); // переделать
+    activateElement(adForm, NAME_CLASS_AD); // переделать
     toggleStateOfElements(elementsOfAdForm);
+    activateElement(mapForm, NAME_CLASS_HIDDEN);
     window.backend.loadData(successHandler, errorHandler);
     window.form.setAdressMapPinMain(MAP_PIN_MAIN_HEIGHT);
     setActiveStateListeners();
@@ -98,5 +102,8 @@
     mapPinMousedownHandler: mapPinMousedownHandler,
     mapPinKeydownHandler: mapPinKeydownHandler,
     toggleStateForms: toggleStateForms,
+    getFilterInputHandler: function () {
+      return filterInputHandler;
+    }
   };
 })();

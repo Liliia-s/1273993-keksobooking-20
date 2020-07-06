@@ -66,7 +66,7 @@
     for (var i = 0; i < adverts.length; i++) {
       if (filterPins.length === MAX_SIMILAR_PIN_COUNT) {
         break;
-      } if (functionOfFilter(adverts[i])) {
+      } if (adverts[i].offer && functionOfFilter(adverts[i])) {
         filterPins.push(adverts[i]);
       }
     }
@@ -75,7 +75,7 @@
 
   var getPins = function () {
     window.cardShow.closePopup();
-    window.deactivation.pinsRemove();
+    window.util.elementsRemove(window.util.NAME_CLASS_PIN);
     announcements = filterAdverts(window.backend.dataAds, applyFilters);
     mapPins.appendChild(window.pin.create(announcements));
   };
