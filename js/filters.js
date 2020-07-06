@@ -4,11 +4,11 @@
   var MAX_SIMILAR_PIN_COUNT = 5;
   var VALUE_ANY = 'any';
   var PriceValue = {
-    PRICE_MIN: 10000,
-    PRICE_MAX: 50000,
-    PRICE_VALUE_LOW: 'low',
-    PRICE_VALUE_MIDDLE: 'middle',
-    PRICE_VALUE_HIGH: 'high'
+    MIN: 10000,
+    MAX: 50000,
+    LOW: 'low',
+    MIDDLE: 'middle',
+    HIGH: 'high'
   };
   var mapForm = window.util.mapForm;
   var mapPins = window.util.mapPins;
@@ -24,12 +24,12 @@
   };
 
   var filterPrice = function (advert) {
-    if (filterOfPrice.value === PriceValue.PRICE_VALUE_LOW) {
-      return advert.offer.price < PriceValue.PRICE_MIN;
-    } else if (filterOfPrice.value === PriceValue.PRICE_VALUE_MIDDLE) {
-      return PriceValue.PRICE_MIN < advert.offer.price < PriceValue.PRICE_MAX;
-    } else if (filterOfPrice.value === PriceValue.PRICE_VALUE_HIGH) {
-      return advert.offer.price > PriceValue.PRICE_MAX;
+    if (filterOfPrice.value === PriceValue.LOW) {
+      return advert.offer.price < PriceValue.MIN;
+    } else if (filterOfPrice.value === PriceValue.MIDDLE) {
+      return PriceValue.MIN <= advert.offer.price < PriceValue.MAX;
+    } else if (filterOfPrice.value === PriceValue.HIGH) {
+      return advert.offer.price >= PriceValue.MAX;
     } else {
       return filterOfPrice.value === VALUE_ANY;
     }
@@ -55,7 +55,7 @@
 
   var allFilters = [filterType, filterPrice, filterRooms, filterGuests, filterFeatures];
 
-  var getFunctionOfFilter = function (element) {
+  var applyFilters = function (element) {
     return allFilters.every(function (filter) {
       return filter(element);
     });
@@ -76,7 +76,7 @@
   var getPins = function () {
     window.cardShow.closePopup();
     window.deactivation.pinsRemove();
-    announcements = filterAdverts(window.backend.dataAds, getFunctionOfFilter);
+    announcements = filterAdverts(window.backend.dataAds, applyFilters);
     mapPins.appendChild(window.pin.create(announcements));
   };
 
