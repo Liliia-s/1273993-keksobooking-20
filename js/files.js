@@ -2,14 +2,15 @@
 
 (function () {
   var FILE_TYPES = ['jpg', 'jpeg', 'png'];
+  var SIZE_FOR_PHOTO = 60;
   var chooserAvatar = document.querySelector('.ad-form__field input[type=file]');
   var previewAvatar = document.querySelector('.ad-form-header__preview img');
   var chooserPhotoOfHousing = document.querySelector('.ad-form__upload input[type=file]');
   var previewPhotoOfHousingContainer = document.querySelector('.ad-form__photo-container');
   var previewPhotoOfHousing = document.querySelector('.ad-form__photo');
 
-  var chooserAvatarChangeHandler = function () {
-    var file = chooserAvatar.files[0];
+  var loadFile = function (element, preview) {
+    var file = element.files[0];
     var fileName = file.name.toLowerCase();
     var matches = FILE_TYPES.some(function (it) {
       return fileName.endsWith(it);
@@ -18,45 +19,31 @@
     if (matches) {
       var reader = new FileReader();
       reader.addEventListener('load', function () {
-        previewAvatar.src = reader.result;
+        preview.src = reader.result;
       });
       reader.readAsDataURL(file);
     }
   };
 
-  var createPreviewPhotoElement = function (result) {
+  var createPreviewPhotoElement = function () {
     var blockGrey = document.createElement('div');
     blockGrey.classList.add('ad-form__photo');
     var blockImg = document.createElement('img');
     blockGrey.appendChild(blockImg);
-    blockImg.src = result;
     blockImg.alt = 'Фото жилья';
-    blockImg.width = '60';
-    blockImg.height = '60';
+    blockImg.width = SIZE_FOR_PHOTO;
+    blockImg.height = SIZE_FOR_PHOTO;
     previewPhotoOfHousingContainer.appendChild(blockGrey);
+    return blockImg;
   };
 
-  var addPhotoOfHousing = function (item) {
-    var reader = new FileReader();
-    reader.addEventListener('load', function () {
-      createPreviewPhotoElement(reader.result);
-    });
-    reader.readAsDataURL(item);
+  var chooserAvatarChangeHandler = function () {
+    loadFile(chooserAvatar, previewAvatar);
   };
 
   var chooserPhotoOfHousingChangeHandler = function () {
     previewPhotoOfHousing.classList.add('hidden'); // переделать
-    for (var i = 0; i < chooserPhotoOfHousing.files.length; i++) {
-      var file = chooserPhotoOfHousing.files[i];
-      var fileName = file.name.toLowerCase();
-      var matches = FILE_TYPES.some(function (it) {
-        return fileName.endsWith(it);
-      });
-
-      if (matches) {
-        addPhotoOfHousing(file);
-      }
-    }
+    loadFile(chooserPhotoOfHousing, createPreviewPhotoElement());
   };
 
   window.files = {

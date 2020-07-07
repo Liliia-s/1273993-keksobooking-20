@@ -5,6 +5,7 @@
   var MAP_PIN_MAIN_HEIGHT = 82;
   var NAME_CLASS_MAP = 'map--faded';
   var NAME_CLASS_AD = 'ad-form--disabled';
+  var NAME_CLASS_HIDDEN = 'hidden';
   var mapForm = window.util.mapForm;
   var mapPins = window.util.mapPins;
   var adForm = window.util.adForm;
@@ -12,7 +13,6 @@
   var elementsOfMapForm = mapForm.querySelectorAll('input, select');
   var resetButton = document.querySelector('.ad-form__reset');
   var buttonSubmit = document.querySelector('.ad-form__submit');
-  var NAME_CLASS_HIDDEN = 'hidden';
   var filterInputHandler;
 
   var activateElement = function (element, className) {

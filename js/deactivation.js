@@ -3,10 +3,11 @@
 (function () {
   var LOCATION_MAP_PIN_MAIN_X = 570;
   var LOCATION_MAP_PIN_MAIN_Y = 375;
+  var NAME_CLASS_PHOTO = '.ad-form__photo:not(.ad-form__photo--template)';
+  var DEFAULT_SRC = 'img/muffin-grey.svg';
   var adForm = window.util.adForm;
   var mapForm = window.util.mapForm;
   var mapPinMain = window.util.mapPinMain;
-  var NAME_CLASS_PHOTO = '.ad-form__photo:not(.ad-form__photo--template)';
 
   var deactivateElement = function (element, className) {
     element.classList.add(className);
@@ -31,8 +32,7 @@
   };
 
   var resetAvatar = function () {
-    var defaultSrc = 'img/muffin-grey.svg';
-    window.files.previewAvatar.src = defaultSrc;
+    window.files.previewAvatar.src = DEFAULT_SRC;
   };
 
   var deactivatePage = function () {
