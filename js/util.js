@@ -9,11 +9,16 @@
   var mapForm = document.querySelector('.map__filters');
   var mapPins = document.querySelector('.map__pins');
   var mapPinMain = document.querySelector('.map__pin--main');
+
   var elementsRemove = function (className) {
     var elements = document.querySelectorAll(className);
     elements.forEach(function (element) {
       element.remove();
     });
+  };
+
+  var toggleActiveElement = function (element, className) {
+    element.classList.toggle(className);
   };
 
   window.util = {
@@ -26,5 +31,6 @@
     mapPins: mapPins,
     mapPinMain: mapPinMain,
     elementsRemove: elementsRemove,
+    toggleActiveElement: toggleActiveElement
   };
 })();

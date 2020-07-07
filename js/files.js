@@ -42,7 +42,7 @@
   };
 
   var chooserPhotoOfHousingChangeHandler = function () {
-    previewPhotoOfHousing.classList.add('hidden'); // переделать
+    previewPhotoOfHousing.classList.add('hidden');
     loadFile(chooserPhotoOfHousing, createPreviewPhotoElement());
   };
 

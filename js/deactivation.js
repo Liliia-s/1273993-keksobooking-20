@@ -9,14 +9,9 @@
   var mapForm = window.util.mapForm;
   var mapPinMain = window.util.mapPinMain;
 
-  var deactivateElement = function (element, className) {
-    element.classList.add(className);
-  }; // переделать
-
   var setDefaultLocation = function () {
     mapPinMain.style.top = LOCATION_MAP_PIN_MAIN_Y + 'px';
     mapPinMain.style.left = LOCATION_MAP_PIN_MAIN_X + 'px';
-    window.form.setAdressMapPinMain(window.activation.MAP_PIN_MAIN_ROUND_HALF_HEIGHT);
   };
 
   var removeEventListener = function () {
@@ -24,7 +19,6 @@
     window.activation.resetButton.removeEventListener('click', deactivatePage);
     adForm.removeEventListener('submit', window.formSubmit.handler);
     window.activation.buttonSubmit.removeEventListener('click', window.formValidation.buttonSubmit);
-    mapPinMain.removeEventListener('mousedown', window.pinMainMove.mousedownHandler);
     window.util.mapPins.removeEventListener('click', window.cardShow.mapPinClickHandler);
     window.files.chooserAvatar.removeEventListener('change', window.files.loadAvatar);
     window.files.chooserHousing.removeEventListener('change', window.files.loadPhotoOfhousing);
@@ -37,20 +31,19 @@
 
   var deactivatePage = function () {
     window.util.elementsRemove(window.util.NAME_CLASS_PIN);
-    window.activation.toggleStateForms();
-    mapForm.classList.add('hidden'); // переделать
-    deactivateElement(window.cardShow.map, window.activation.NAME_CLASS_MAP);
-    deactivateElement(adForm, window.activation.NAME_CLASS_AD);
-    resetAvatar();
-    window.files.previewPhotoOfHousing.classList.remove('hidden'); // переделать
-    window.util.elementsRemove(NAME_CLASS_PHOTO);
     adForm.reset();
     mapForm.reset();
+    window.activation.setInitialStates();
+    window.util.toggleActiveElement(window.cardShow.map, window.activation.NAME_CLASS_MAP);
+    window.util.toggleActiveElement(adForm, window.activation.NAME_CLASS_AD);
+    resetAvatar();
+    window.files.previewPhotoOfHousing.classList.remove('hidden');
+    window.util.elementsRemove(NAME_CLASS_PHOTO);
     window.form.fieldTypeInputHandler();
     setDefaultLocation();
     window.formValidation.fieldsCheck.forEach(function (element) {
       element.classList.remove('error-field');
-    }); // удалить через функцию в util
+    });
     window.cardShow.closePopup();
     mapPinMain.addEventListener('mousedown', window.activation.mapPinMousedownHandler);
     mapPinMain.addEventListener('keydown', window.activation.mapPinKeydownHandler);

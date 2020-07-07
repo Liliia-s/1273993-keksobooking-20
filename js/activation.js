@@ -15,24 +15,21 @@
   var buttonSubmit = document.querySelector('.ad-form__submit');
   var filterInputHandler;
 
-  var activateElement = function (element, className) {
-    element.classList.remove(className);
-  }; // переделать в общую функцию с deactivateElement в deactivation и перенести в util
-
   var toggleStateOfElements = function (elements) {
     for (var i = 0; i < elements.length; i++) {
       elements[i].toggleAttribute('disabled');
     }
   };
 
-  var toggleStateForms = function () {
+  var setInitialStates = function () {
+    window.form.setAdressMapPinMain(MAP_PIN_MAIN_ROUND_HALF_HEIGHT);
     toggleStateOfElements(elementsOfAdForm);
     toggleStateOfElements(elementsOfMapForm);
+    window.util.mapPinMain.addEventListener('mousedown', window.pinMainMove.mousedownHandler);
+    window.util.toggleActiveElement(mapForm, NAME_CLASS_HIDDEN);
   };
 
-  toggleStateForms();
-  window.form.setAdressMapPinMain(MAP_PIN_MAIN_ROUND_HALF_HEIGHT);
-  mapForm.classList.add('hidden'); // переделать
+  setInitialStates();
 
   var successHandler = function (adverts) {
     window.backend.dataAds = adverts;
@@ -66,10 +63,10 @@
   };
 
   var activateStatePage = function () {
-    activateElement(window.cardShow.map, NAME_CLASS_MAP); // переделать
-    activateElement(adForm, NAME_CLASS_AD); // переделать
+    window.util.toggleActiveElement(window.cardShow.map, NAME_CLASS_MAP);
+    window.util.toggleActiveElement(adForm, NAME_CLASS_AD);
     toggleStateOfElements(elementsOfAdForm);
-    activateElement(mapForm, NAME_CLASS_HIDDEN);
+    window.util.toggleActiveElement(mapForm, NAME_CLASS_HIDDEN);
     window.backend.loadData(successHandler, errorHandler);
     window.form.setAdressMapPinMain(MAP_PIN_MAIN_HEIGHT);
     setActiveStateListeners();
@@ -99,9 +96,9 @@
     MAP_PIN_MAIN_HEIGHT: MAP_PIN_MAIN_HEIGHT,
     resetButton: resetButton,
     buttonSubmit: buttonSubmit,
+    setInitialStates: setInitialStates,
     mapPinMousedownHandler: mapPinMousedownHandler,
     mapPinKeydownHandler: mapPinKeydownHandler,
-    toggleStateForms: toggleStateForms,
     getFilterInputHandler: function () {
       return filterInputHandler;
     }
