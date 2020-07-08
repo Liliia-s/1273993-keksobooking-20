@@ -5,6 +5,7 @@
   var KEY_CODE_MOUSE_LEFT = 0;
   var KEY_CODE_ESC = 27;
   var NAME_CLASS_PIN = '.map__pin:not(.map__pin--main)';
+  var NAME_CLASS_HIDDEN = 'hidden';
   var adForm = document.querySelector('.ad-form');
   var mapForm = document.querySelector('.map__filters');
   var mapPins = document.querySelector('.map__pins');
@@ -26,6 +27,7 @@
     KEY_CODE_MOUSE_LEFT: KEY_CODE_MOUSE_LEFT,
     KEY_CODE_ESC: KEY_CODE_ESC,
     NAME_CLASS_PIN: NAME_CLASS_PIN,
+    NAME_CLASS_HIDDEN: NAME_CLASS_HIDDEN,
     adForm: adForm,
     mapForm: mapForm,
     mapPins: mapPins,

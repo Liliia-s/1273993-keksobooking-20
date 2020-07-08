@@ -5,7 +5,6 @@
   var MAP_PIN_MAIN_HEIGHT = 82;
   var NAME_CLASS_MAP = 'map--faded';
   var NAME_CLASS_AD = 'ad-form--disabled';
-  var NAME_CLASS_HIDDEN = 'hidden';
   var mapForm = window.util.mapForm;
   var mapPins = window.util.mapPins;
   var adForm = window.util.adForm;
@@ -26,7 +25,7 @@
     toggleStateOfElements(elementsOfAdForm);
     toggleStateOfElements(elementsOfMapForm);
     window.util.mapPinMain.addEventListener('mousedown', window.pinMainMove.mousedownHandler);
-    window.util.toggleActiveElement(mapForm, NAME_CLASS_HIDDEN);
+    window.util.toggleActiveElement(mapForm, window.util.NAME_CLASS_HIDDEN);
   };
 
   setInitialStates();
@@ -66,7 +65,7 @@
     window.util.toggleActiveElement(window.cardShow.map, NAME_CLASS_MAP);
     window.util.toggleActiveElement(adForm, NAME_CLASS_AD);
     toggleStateOfElements(elementsOfAdForm);
-    window.util.toggleActiveElement(mapForm, NAME_CLASS_HIDDEN);
+    window.util.toggleActiveElement(mapForm, window.util.NAME_CLASS_HIDDEN);
     window.backend.loadData(successHandler, errorHandler);
     window.form.setAdressMapPinMain(MAP_PIN_MAIN_HEIGHT);
     setActiveStateListeners();

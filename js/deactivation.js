@@ -37,7 +37,7 @@
     window.util.toggleActiveElement(window.cardShow.map, window.activation.NAME_CLASS_MAP);
     window.util.toggleActiveElement(adForm, window.activation.NAME_CLASS_AD);
     resetAvatar();
-    window.files.previewPhotoOfHousing.classList.remove('hidden');
+    window.files.previewPhotoOfHousing.classList.remove(window.util.NAME_CLASS_HIDDEN);
     window.util.elementsRemove(NAME_CLASS_PHOTO);
     window.form.fieldTypeInputHandler();
     setDefaultLocation();

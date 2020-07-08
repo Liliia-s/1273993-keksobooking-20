@@ -15,7 +15,7 @@
         cardFeatures.appendChild(popupFeature);
       });
     } else {
-      cardFeatures.classList.add('hidden');
+      cardFeatures.classList.add(window.util.NAME_CLASS_HIDDEN);
     }
   };
 
@@ -30,17 +30,16 @@
         cardPhoto.src = element;
         cardPhotos.appendChild(cardPhoto);
       });
-
     } else {
-      cardPhotos.classList.add('hidden');
+      cardPhotos.classList.add(window.util.NAME_CLASS_HIDDEN);
     }
   };
 
   var types = {
-    bungalo: 'Бунгало',
-    flat: 'Квартира',
-    house: 'Дом',
-    palace: 'Дворец'
+    'bungalo': 'Бунгало',
+    'flat': 'Квартира',
+    'house': 'Дом',
+    'palace': 'Дворец'
   };
 
   var createCardOfAnnouncements = function (user) {
@@ -57,7 +56,7 @@
     if (user.author.avatar) {
       cardAvatar.src = user.author.avatar;
     } else {
-      cardAvatar.classList.add('hidden');
+      cardAvatar.classList.add(window.util.NAME_CLASS_HIDDEN);
     }
 
     cardTitle.textContent = user.offer.title;
@@ -72,7 +71,7 @@
     if (user.offer.description) {
       cardDescription.textContent = user.offer.description;
     } else {
-      cardDescription.classList.add('hidden');
+      cardDescription.classList.add(window.util.NAME_CLASS_HIDDEN);
     }
 
     getCardPhotos(user, card);

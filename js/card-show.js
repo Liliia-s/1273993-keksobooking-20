@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  var MAP_PIN_ACTIVE = 'map__pin--active';
   var mapFilters = document.querySelector('.map__filters-container');
   var map = document.querySelector('.map');
 
@@ -21,17 +22,18 @@
   var removeMapPinActive = function () {
     var mapPinActive = map.querySelector('.map__pin--active');
     if (mapPinActive) {
-      mapPinActive.classList.remove('map__pin--active');
+      mapPinActive.classList.remove(MAP_PIN_ACTIVE);
     }
   };
 
   var mapPinClickHandler = function (evt) {
     if (evt.target.matches('.map__pin:not(.map__pin--main), img[data-index]')) {
+
       removeMapPinActive();
       if (evt.target.matches('.map__pin:not(.map__pin--main)')) {
-        evt.target.classList.add('map__pin--active');
-      } else if (evt.target.matches('img[data-index]')) {
-        evt.target.parentElement.classList.add('map__pin--active');
+        evt.target.classList.add(MAP_PIN_ACTIVE);
+      } else {
+        evt.target.parentElement.classList.add(MAP_PIN_ACTIVE);
       }
 
       var indexPin = evt.target.dataset.index;

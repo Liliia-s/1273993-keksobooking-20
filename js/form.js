@@ -43,10 +43,10 @@
   var fieldPrice = document.querySelector('#price');
 
   var pricesForTypes = {
-    bungalo: 0,
-    flat: 1000,
-    house: 5000,
-    palace: 10000
+    'bungalo': 0,
+    'flat': 1000,
+    'house': 5000,
+    'palace': 10000
   };
 
   var fieldTypeInputHandler = function () {
