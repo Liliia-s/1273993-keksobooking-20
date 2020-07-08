@@ -21,10 +21,10 @@
   };
 
   var createMapPins = function (announcements) {
-    for (var i = 0; i < announcements.length; i++) {
-      var pin = createDomElement(announcements[i], i);
+    announcements.forEach(function (element, index) {
+      var pin = createDomElement(element, index);
       fragment.appendChild(pin);
-    }
+    });
     return fragment;
   };
 
