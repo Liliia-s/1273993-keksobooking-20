@@ -16,9 +16,9 @@
   var filterInputHandler;
 
   var toggleStateOfElements = function (elements) {
-    for (var i = 0; i < elements.length; i++) {
-      elements[i].toggleAttribute('disabled');
-    }
+    elements.forEach(function (element) {
+      element.toggleAttribute('disabled');
+    });
   };
 
   var setInitialStates = function () {
